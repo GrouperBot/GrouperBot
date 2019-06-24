@@ -1,5 +1,5 @@
 module.exports.run = async (client, message, args, prefix) => {
-    message.channel.sendMessage('yofou!')
+    message.channel.sendMessage('headline!')
     .then().catch(console.error);
 }
 
