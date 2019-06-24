@@ -11,14 +11,6 @@ module.exports.run = async (client, message, args, prefix) => {
     .setColor("#00FFFF")
 
     // Iterate through commandfiles for every file
-    // for (const file of commandFiles) {
-    //   const command = require(__dirname.replace("commands",`commands\\${file}`)); // Get info about each file
-    //
-    //   // Pushes the Feild name (command name) Description of the command into embed
-    //   if (command.help.dev == false || message.member.hasPermission('ADMINISTRATOR')){helpEmbed.addField(command.help.name,`	\`\`\`${command.help.description}\`\`\` `,false)}
-    //
-    // }
-
     client.commands.forEach(element => {
       let name = element.help.name;
       let desc = element.help.description;
