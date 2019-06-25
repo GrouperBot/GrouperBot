@@ -6,8 +6,6 @@ const fs = require('fs');
 const botconfig = require('./settings.json');
 const Database = require('./filesys.js');
 
-const db = new Database();
-db.Initialize();
 
 // Add commands
 console.log('loading commands...');

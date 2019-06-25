@@ -6,25 +6,21 @@ class Database {
      */
     constructor() {
         this.file = 'adverts.json';
-        this.data = null;
+        this.data = null
     }
 
-    Initialize() {
-        let self = this;
-        fs.readFile(this.file, (err, data) => {
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    self.data = [];
-                    return;
-                }
+    Open() {
 
-                throw err;
-            }
-            self.data = JSON.parse(data);
-        });
+        // Get JSON file
+        try {
+          this.data = require("./adverts.json")
+        } catch(e) {
+          if (e.code === 'ENOENT') {this.data = [];return;} // Return data as empty Array
+          console.log(e)
+        }
     }
 
-    Save() {
+    Close() {
         fs.writeFile(this.file, JSON.stringify(this.data), 'utf8', (err, data) => {
             if (err) {
                 console.log('error writing database to file');
