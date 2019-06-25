@@ -4,7 +4,7 @@ const database = require(__dirname.replace("commands","filesys.js"));
 
 const DiscordMessageMenu = require('../menu.js');
 
-module.exports.run = async (client, message, args, prefix) => {
+module.exports.run = async (client, message, args, prefix,tagmngr) => {
 
   args.shift(); // remove first element of array (command name)
 
@@ -34,30 +34,25 @@ module.exports.run = async (client, message, args, prefix) => {
 
       message.reply( `Sorry I couldn't find the tag " ${args[0]} " ` )
     } else {
-
       args.shift() // remove "new" from args
 
-      questions = ["What tag would you like","Number of players needed","Description"]
-      userReplies = [message.author.username]
+      if (args.length >= 3){
 
-      // filter = m => m.author.id == message.author.id;
+        // if user tag in tag list then add it two database
+        if (tagmngr.data.includes(args[0])) {
+          db.data[args[0]].push( {"description" : args.slice( 3 ).join(" "),"author" : message.author.tag,"playernum" : args[1],"timestamp" : new Date()} )
+          message.reply("Your Ad has been added to our boards :smile:")
+          db.Close()
+          // db.Save()
+        } else {
+          message.reply(`${args[0]} isn't in db`)
+        }
 
 
-      for (question of questions){
-
-        message.channel.send(question)
-
-        const msgs = await message.channel.awaitMessages(function(msg){
-
-          if (msg.author.id == client.id){
-            userReplies.push(msg.content)
-          }
-
-        }, {time : 10000})
       }
-      console.log(userReplies)
+
+      }
     }
-  }
 }
 
 module.exports.help = {
