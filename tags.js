@@ -23,6 +23,26 @@ class TagManager {
     TagExists(needle) {
         return this.data.find(haystack => haystack == needle) != null;
     }
+
+    AddTag(tag) {
+        if (this.TagExists(tag))
+            return;
+        if (!data)
+            throw new Error('File not yet opened!');
+        this.data.push(tag);
+        this.Save();
+    }
+
+    RemoveTag(tag) {
+        if (!this.TagExists(tag))
+            return;
+        if (!data)
+        throw new Error('File not yet opened!');
+        this.data = this.data.filter(function(value, index, arr) {
+            return value != tag;
+        });
+        this.Save();
+    }
 }
 
 module.exports = TagManager;
