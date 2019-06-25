@@ -10,6 +10,11 @@ const Database = require('./filesys.js');
 // Add commands
 console.log('loading commands...');
 client.commands = new Discord.Collection();
+
+const TagManager = require('./tags.js');
+let tagmngr = new TagManager('./tags.json');
+tagmngr.Open();
+
 fs.readdir('./commands/', (err, files) => {
     if (err)
         console.log(err);
