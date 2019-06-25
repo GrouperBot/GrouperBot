@@ -10,7 +10,7 @@ class Database {
     }
 
     Open() {
-
+      
         // Get JSON file
         try {
           this.data = require("./adverts.json")

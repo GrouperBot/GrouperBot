@@ -2,8 +2,6 @@ const fs = require('fs');
 const discord = require('discord.js');
 const database = require(__dirname.replace("commands","filesys.js"));
 
-// Dynamic Help command
-
 module.exports.run = async (client, message, args, prefix) => {
 
   args.shift(); // remove first element of array (command name)
@@ -44,9 +42,46 @@ module.exports.run = async (client, message, args, prefix) => {
       }
 
       message.reply( `Sorry I couldn't find the tag " ${args[0]} " ` )
+    } else {
+
+      args.shift() // remove "new" from args
+
+      questions = ["What tag would you like","Number of players needed","Description"]
+      userReplies = [message.author.username]
+
+      // filter = m => m.author.id == message.author.id;
 
 
-    }}}
+      for (question of questions){
+
+        message.channel.send(question)
+
+        const msgs = await message.channel.awaitMessages(function(msg){
+
+          if (msg.author.id == client.id){
+            userReplies.push(msg.content)
+          }
+
+        }, {time : 10000})
+      }
+
+      console.log(userReplies)
+
+
+
+    }
+
+
+
+  }
+
+
+
+
+
+
+}
+
 
 module.exports.help = {
     name: "lfg",
