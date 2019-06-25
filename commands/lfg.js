@@ -1,17 +1,11 @@
 const fs = require('fs');
 const discord = require('discord.js');
-const database = require(__dirname.replace("commands","filesys.js"));
 
 const DiscordMessageMenu = require('../menu.js');
 
-module.exports.run = async (client, message, args, prefix) => {
+module.exports.run = async (client, message, args, prefix, tagmngr, db) => {
 
   args.shift(); // remove first element of array (command name)
-
-  // Gets Data
-
-  let db = new database()
-  db.Open()
 
   // length of arg 0 means show ads
   if (args.length == 0) {
