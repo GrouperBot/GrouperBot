@@ -2,6 +2,8 @@ const fs = require('fs');
 const discord = require('discord.js');
 const database = require(__dirname.replace("commands","filesys.js"));
 
+const DiscordMessageMenu = require('../menu.js');
+
 module.exports.run = async (client, message, args, prefix) => {
 
   args.shift(); // remove first element of array (command name)
@@ -9,9 +11,7 @@ module.exports.run = async (client, message, args, prefix) => {
   // Gets Data
 
   let db = new database()
-
   db.Open()
-
 
   // length of arg 0 means show ads
   if (args.length == 0) {
@@ -20,24 +20,15 @@ module.exports.run = async (client, message, args, prefix) => {
   } else {
     // Searching Algorithm of finding tags
     if ( args[0].toLowerCase() != "new" ) {
-      // Setup embed
-      const adsEmbed = new discord.RichEmbed()
-      .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f4cb.png")
-      .setColor( "#964B00" )
-
-
       // Nested loop to iterate through all the json data to find tag
       for ( tag of Object.keys( db.data ) ) {
 
         // Found Tag
         if (tag.toLowerCase() == args[0].toLowerCase()){
-
-          adsEmbed.setTitle( `Ads Board - ${tag.toUpperCase()}` )
-
-          // Inserts to embed
-          for ( ad of db.data[tag] ) {adsEmbed.addField( ad["author"],`	\`\`\`\nlooking for ${ad["playernum"]} players \n\n${ad["description"]}\`\`\` `,false )}
-
-          return message.reply( adsEmbed ) // Found tag doesnt need to go though the rest of the json
+          let menu = new DiscordMessageMenu(message, `Ads Board - ${tag.toUpperCase()}`, "#964B00", 4);
+          menu.buildMenu(db.data[tag]);
+          menu.displayPage(0);
+          return;
         }
       }
 
@@ -64,24 +55,10 @@ module.exports.run = async (client, message, args, prefix) => {
 
         }, {time : 10000})
       }
-
       console.log(userReplies)
-
-
-
     }
-
-
-
   }
-
-
-
-
-
-
 }
-
 
 module.exports.help = {
     name: "lfg",
