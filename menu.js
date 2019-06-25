@@ -7,6 +7,7 @@ class DiscordMessageMenu {
         this.left = '◀';
         this.stop = '🛑';
         this.right = '▶';
+        this.bullet = '•'
         this.authormessage = authormessage;
         this.message = null;
         this.displaycount = displaycount;
@@ -15,6 +16,15 @@ class DiscordMessageMenu {
         this.targetid = authormessage.author.id;
         this.timeout = null;
         this.collector = null;
+        this.taglist = false;
+    }
+
+    /**
+     * Determines how the menu should be built. Tags should display a different embed.
+     * @param {Boolean} taglist 
+     */
+    setTagList(taglist) {
+        this.taglist = taglist;
     }
 
     /**
@@ -101,21 +111,35 @@ class DiscordMessageMenu {
         let items = this.menu.slice(start, end);
 
         // Message dispatch
-        const embed = new Discord.RichEmbed()
-        .setTitle(this.title)
-        .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f4cb.png")
-        .setColor(this.color)
-        .setFooter("Requested by: " + this.authormessage.author.tag + ' | page: ' + (this.page+1) + '/' + (this.getMaxPage()+1));
+        let embed = new Discord.RichEmbed();
         
         // put every item on it's own line
         let output = "";
-        items.forEach(element => {
-            if (element["playernum"] > 1) {
-                embed.addField( `${element["author"]} (${element["playernum"]} players needed)`,`	\`\`\`\n${element["description"]}\`\`\` \n\n`,false )
-            } else {
-                embed.addField( `${element["author"]} (${element["playernum"]} player needed)`,`	\`\`\`\n${element["description"]}\`\`\` \n\n`,false )
-            }
-        });
+        if (!this.taglist) {
+            embed.setTitle(this.title)
+            embed.setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f4cb.png")
+            embed.setColor(this.color)
+            embed.setFooter("Requested by: " + this.authormessage.author.tag + ' | page: ' + (this.page+1) + '/' + (this.getMaxPage()+1));
+    
+            items.forEach(element => {
+                if (element["playernum"] > 1) {
+                    embed.addField( `${element["author"]} (${element["playernum"]} players needed)`,`	\`\`\`\n${element["description"]}\`\`\` \n\n`,false )
+                } else {
+                    embed.addField( `${element["author"]} (${element["playernum"]} player needed)`,`	\`\`\`\n${element["description"]}\`\`\` \n\n`,false )
+                }
+            });
+        } else {
+            this.authormessage.channel.send('Here\'s our list of available tags, think we missed one? Contact us with: ').then().catch(console.log)
+            embed.setTitle(this.title)
+            embed.setThumbnail("https://images.emojiterra.com/google/android-oreo/128px/1f4bd.png")
+            embed.setColor(this.color)
+            embed.setFooter("Requested by: " + this.authormessage.author.tag + ' | page: ' + (this.page+1) + '/' + (this.getMaxPage()+1));
+            let description = "";
+            items.forEach(element => {
+                description += `${this.bullet} ${element} \n`;
+            });
+            embed.setDescription(description);
+        }
 
         if (!this.message) { // we haven't already sent one, so send()
             let that = this;
