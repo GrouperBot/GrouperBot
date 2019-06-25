@@ -17,7 +17,9 @@ module.exports.run = async (client, message, args, prefix) => {
       let dev = element.help.dev;
 
       // Pushes the Feild name (command name) Description of the command into embed
-      if (dev == false || message.member.hasPermission('ADMINISTRATOR')){helpEmbed.addField(name,`	\`\`\`${desc}\`\`\` `,false)}
+      if (!dev) {
+        helpEmbed.addField(name,`	\`\`\`${desc}\`\`\` `,false)
+      }
     });
 
     // Send callback
