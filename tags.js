@@ -19,10 +19,6 @@ class TagManager {
         });
     }
 
-    GetTags() {
-        return this.data;
-    }
-
     TagExists(needle) {
         return this.data.find(haystack => haystack == needle) != null;
     }
