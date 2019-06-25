@@ -4,8 +4,6 @@ const client = new Discord.Client({disableEveryone: true});
 const fs = require('fs');
 
 const botconfig = require('./settings.json');
-const Database = require('./filesys.js');
-
 
 // Add commands
 console.log('loading commands...');
@@ -14,6 +12,10 @@ client.commands = new Discord.Collection();
 const TagManager = require('./tags.js');
 let tagmngr = new TagManager('./tags.json');
 tagmngr.Open();
+
+const Database = require('./filesys.js');
+let db = new Database()
+db.Open()
 
 fs.readdir('./commands/', (err, files) => {
     if (err)
@@ -59,7 +61,7 @@ client.on('message', message => {
                 return;
         }
 
-        commandfile.run(client, message, args, botconfig.prefix, tagmngr);
+        commandfile.run(client, message, args, botconfig.prefix, tagmngr, db);
     }
 });
 
