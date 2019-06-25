@@ -4,6 +4,8 @@ const client = new Discord.Client({disableEveryone: true});
 const fs = require('fs');
 
 const botconfig = require('./settings.json');
+const Database = require('./filesys.js');
+
 
 // Add commands
 console.log('loading commands...');
@@ -11,7 +13,7 @@ client.commands = new Discord.Collection();
 fs.readdir('./commands/', (err, files) => {
     if (err)
         console.log(err);
-    
+
     let jsfiles = files.filter(f => f.split('.').pop() === 'js');
     if (jsfiles.length == 0)
         return
