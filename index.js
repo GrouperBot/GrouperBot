@@ -39,7 +39,7 @@ client.on('guildDelete', (g) => {
 
 // Callbacks
 client.on('ready', () => {
-    console.log('\'ready\' event executed. discord-compiler has started');
+    console.log('\'ready\' event executed. lfg bot has started');
 });
 
 client.on('message', message => {
@@ -51,10 +51,15 @@ client.on('message', message => {
     let args = message.content.split(" ").join('\n').split('\n');
     let commandfile = client.commands.get(args[0]);
     if (commandfile) {
-        if(commandfile.help.dev && message.author.id != botconfig.owner_id)
-            return;
+        if(commandfile.help.dev) {
+            let found = botconfig.developers.find(function(element) {
+                return message.author.id == element;
+            });
+            if (found == null)
+                return;
+        }
 
-        commandfile.run(client, message, args, botconfig.prefix);
+        commandfile.run(client, message, args, botconfig.prefix, tagmngr);
     }
 });
 

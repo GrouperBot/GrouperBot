@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 class TagManager {
-
     constructor(filename) {
         this.filename = filename;
         this.data = null;
@@ -12,12 +11,16 @@ class TagManager {
     }
 
     Save() {
-        fs.writeFile(this.file, JSON.stringify(this.data), 'utf8', (err, data) => {
+        fs.writeFile(this.filename, JSON.stringify(this.data), 'utf8', (err, data) => {
             if (err) {
                 console.log('error writing database to file');
                 console.log(err);
             }
         });
+    }
+
+    GetTags() {
+        return this.data;
     }
 
     TagExists(needle) {
@@ -27,7 +30,7 @@ class TagManager {
     AddTag(tag) {
         if (this.TagExists(tag))
             return;
-        if (!data)
+        if (!this.data)
             throw new Error('File not yet opened!');
         this.data.push(tag);
         this.Save();
@@ -36,7 +39,7 @@ class TagManager {
     RemoveTag(tag) {
         if (!this.TagExists(tag))
             return;
-        if (!data)
+        if (!this.data)
         throw new Error('File not yet opened!');
         this.data = this.data.filter(function(value, index, arr) {
             return value != tag;
