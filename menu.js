@@ -47,7 +47,7 @@ class DiscordMessageMenu {
     }
 
     handleMessage(result, that, items) {
-        if (items.length < this.displaycount)
+        if (this.getMaxPage() == 0)
             return;
 
         that.message = result;
