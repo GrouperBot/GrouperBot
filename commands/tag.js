@@ -6,16 +6,15 @@ module.exports.run = async (client, message, args, prefix, tagmngr) => {
   let action = args[1];
   let tag = args[2];
 
-  if (action != 'list' && args.length != 3) {
+  if (args.length != 3) {
     const embed = new discord.RichEmbed()
-    .setTitle("Tag Manager")
+    .setTitle("Invalid usage!")
     .setThumbnail("https://images.emojiterra.com/google/android-oreo/128px/1f4bd.png")
-    .setColor("#b8bbc1")
-    .setDescription('did you forget to type \`add\` or \`remove\`?')
+    .setColor("#FF0000")
+    .setDescription('You botched it')
     message.channel.sendMessage(embed).then().catch(console.log);
     return;
-  }
-
+  }  
   if (action == 'add') {
     tagmngr.AddTag(tag);
   }
@@ -23,14 +22,14 @@ module.exports.run = async (client, message, args, prefix, tagmngr) => {
     tagmngr.RemoveTag(tag);
     action = 'remov';
   }
-  else if (action == 'list') {
+  else {
     const embed = new discord.RichEmbed()
     .setTitle("Tag Manager")
     .setThumbnail("https://images.emojiterra.com/google/android-oreo/128px/1f4bd.png")
     .setColor("#b8bbc1")
-    .setDescription(tagmngr.data.join())
+    .setDescription(`Unknown action \`${action}\`! Did you mean \`add\` or \`remove\`?`)
     message.channel.sendMessage(embed).then().catch(console.log);
-    return;    
+    return;
   }
 
   const embed = new discord.RichEmbed()

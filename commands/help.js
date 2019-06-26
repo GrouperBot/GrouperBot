@@ -9,6 +9,7 @@ module.exports.run = async (client, message, args, prefix) => {
     .setTitle("Command Help list")
     .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f5a5.png")
     .setColor("#00FFFF")
+    .setFooter("Requested by: " + message.author.tag)
 
     // Iterate through commandfiles for every file
     client.commands.forEach(element => {

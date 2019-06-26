@@ -19,7 +19,7 @@ class Database {
         }
     }
 
-    Close() {
+    Save() {
         fs.writeFile(this.file, JSON.stringify(this.data), 'utf8', (err, data) => {
             if (err) {
                 console.log('error writing database to file');

@@ -1,19 +1,21 @@
 // npm requirements
 const Discord = require('discord.js');
-const client = new Discord.Client({disableEveryone: true});
 const fs = require('fs');
-
 const botconfig = require('./settings.json');
+const TagManager = require('./tags.js');
 const Database = require('./filesys.js');
 
+const client = new Discord.Client({disableEveryone: true});
+client.commands = new Discord.Collection();
+
+const tagmngr = new TagManager('./tags.json');
+const db = new Database()
+
+tagmngr.Open();
+db.Open()
 
 // Add commands
 console.log('loading commands...');
-client.commands = new Discord.Collection();
-
-const TagManager = require('./tags.js');
-let tagmngr = new TagManager('./tags.json');
-tagmngr.Open();
 
 fs.readdir('./commands/', (err, files) => {
     if (err)
@@ -30,6 +32,8 @@ fs.readdir('./commands/', (err, files) => {
     });
 });
 
+// callbacks
+
 client.on('guildCreate', (g) => {
     console.log(`joining ${g.name}`);
 });
@@ -37,7 +41,6 @@ client.on('guildDelete', (g) => {
     console.log(`leaving ${g.name}`);
 });
 
-// Callbacks
 client.on('ready', () => {
     console.log('\'ready\' event executed. lfg bot has started');
 });
@@ -59,11 +62,9 @@ client.on('message', message => {
                 return;
         }
 
-        commandfile.run(client, message, args, botconfig.prefix, tagmngr);
+        commandfile.run(client, message, args, botconfig.prefix, tagmngr, db);
     }
 });
 
 client.on('error', console.error);
-
-// Pump them callbacks
 client.login(botconfig.token);
