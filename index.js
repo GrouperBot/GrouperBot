@@ -1,25 +1,24 @@
 // npm requirements
-const Discord = require('discord.js');
-const fs = require('fs');
-const botconfig = require('./settings.json');
-const TagManager = require('./tags.js');
-const Database = require('./filesys.js');
+require('dotenv').config();
 
-const client = new Discord.Client({disableEveryone: true});
-client.commands = new Discord.Collection();
+import GrouperClient from './structures/GrouperClient';
+import { initialize } from './database';
+import { readdir } from 'fs';
 
-const tagmngr = new TagManager('./tags.json');
-const db = new Database()
+initialize(process.env.DATABASE_FILE);
 
-tagmngr.Open();
-db.Open()
+const client = new GrouperClient({
+    disableEveryone: true,
+});
 
 // Add commands
 console.log('loading commands...');
 
-fs.readdir('./commands/', (err, files) => {
+readdir('./commands/', (err, files) => {
     if (err)
         console.log(err);
+
+    //TODO: Have all commands implement an abstract class similar to Commando's implementation
 
     let jsfiles = files.filter(f => f.split('.').pop() === 'js');
     if (jsfiles.length == 0)
@@ -46,13 +45,23 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if (!message.content.startsWith(botconfig.prefix)) return;
-    if (message.author.bot) return;
+    if (!message.content.startsWith(process.env.BOT_PREFIX)) {
+        return;
+    }
+
+    if (message.author.bot) {
+        return;
+    }
+
+    //TODO: Argument class, pass along with other data if necessary
 
     // strip !
-    message.content = message.content.substring(botconfig.prefix.length);
+    message.content = message.content.substring(process.env.BOT_PREFIX.length);
+
     let args = message.content.split(" ").join('\n').split('\n');
+
     let commandfile = client.commands.get(args[0]);
+
     if (commandfile) {
         if(commandfile.help.dev) {
             let found = botconfig.developers.find(function(element) {
@@ -62,9 +71,10 @@ client.on('message', message => {
                 return;
         }
 
-        commandfile.run(client, message, args, botconfig.prefix, tagmngr, db);
+        commandfile.run(client, message, args, process.env.BOT_PREFIX, tagmngr, db);
     }
 });
 
 client.on('error', console.error);
-client.login(botconfig.token);
+
+client.login(process.env.BOT_TOKEN);

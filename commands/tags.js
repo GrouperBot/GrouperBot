@@ -1,15 +1,26 @@
-const discord = require('discord.js');
-const DiscordMessageMenu = require('../menu.js');
+import GrouperCommand from '../structures/GrouperCommand.js';
+import GrouperMessage from '../structures/GrouperMessage';
+import DiscordMessageMenu from '../menu';
 
-module.exports.run = async (client, message, args, prefix, tagmngr) => {
-    let menu = new DiscordMessageMenu(message, `Available Tags`, "#b8bbc1", 15);
-    menu.buildMenu(tagmngr.data);
-    menu.setTagList(true);
-    menu.displayPage(0);
-}
+export default class TagsCommand extends GrouperCommand {
+    constructor(client) {
+        super(client, {
+            name: 'Tags',
+            description: 'Return a list of all available tags',
+        });
+    }
 
-module.exports.help = {
-    name: "tags",
-    description: "displays the list of available tags",
-    dev: false
+    /**
+     * Runner for tags command
+     * 
+     * @param {GrouperMessage} message 
+     */
+    async run(message) {
+        // TODO: needs refactoring
+        let menu = new DiscordMessageMenu(message, `Available Tags`, "#b8bbc1", 15);
+
+        menu.buildMenu(this.client.tags.array())
+        menu.setTagList(true);
+        menu.displayPage(0);
+    }
 }
