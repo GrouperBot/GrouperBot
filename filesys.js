@@ -1,4 +1,5 @@
 const fs = require('fs');
+const botconfig = require('./settings.json');
 
 class Database {
     /**
@@ -44,7 +45,7 @@ class Database {
 
     CleanExpired(tag) {
         this.data[tag].forEach(function(element, index, object) {
-            let date = Date.parse(element.timestamp) + (60*60);
+            let date = Date.parse(element.timestamp) + (60*botconfig.expiration_time);
             if (new Date() < date) // if expired
                 object.splice(index, 1); // remove
         });

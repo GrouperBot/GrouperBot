@@ -1,6 +1,3 @@
-const fs = require('fs');
-const discord = require('discord.js');
-
 const DiscordMessageMenu = require('../menu.js');
 
 module.exports.run = async (client, message, args, prefix, tagmngr, db) => {
