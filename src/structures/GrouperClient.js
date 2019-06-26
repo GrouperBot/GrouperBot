@@ -1,4 +1,5 @@
 import { Client, ClientOptions } from 'discord.js';
+import { LoadTags } from '../util/LoadTags';
 import TagStore from '../stores/TagStore';
 import CommandStore from '../stores/CommandStore';
 import GrouperCommandRouter from './GrouperCommandRouter';
@@ -50,9 +51,15 @@ export default class GrouperClient extends Client {
         });
     }
 
-    hookRouter() {
+    hook() {
         this.on('message', (message) => {
             this.router.route(message);
         });
+
+        this.on('databaseInitialized', () => {
+            LoadTags(this);
+        })
+
+        return this;
     }
 }

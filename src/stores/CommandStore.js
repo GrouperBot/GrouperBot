@@ -1,6 +1,8 @@
+import { join } from 'path';
 import { readdir } from 'fs';
 import { Collection } from "discord.js";
 import GrouperClient from "../structures/GrouperClient";
+import GrouperCommand from '../structures/GrouperCommand';
 
 export default class CommandStore extends Collection {
     /**
@@ -19,6 +21,35 @@ export default class CommandStore extends Collection {
         this.client = client;
     }
 
+    /**
+     * Register a command
+     * 
+     * @param {GrouperCommand | Function} command 
+     */
+    registerCommand(command) {
+        if (typeof command === 'function') {
+            command = new command(this.client);
+        }
+
+        if(!(command instanceof GrouperCommand)) {
+            throw new Error('Invalid command class: ' + command);
+        }
+
+        if (this.some(cmd => cmd.name === command.name)) {
+            throw new Error(`Command name "${command.name}" is already registered`);
+        }
+
+        this.set(command.name, command);
+
+        /**
+         * Emitted when a command is registered
+         * 
+         * @event GrouperClient#commandRegistered
+         * @param {GrouperCommand} command Command that was registered
+         */
+        this.client.emit('commandRegistered', command);
+    }
+
     async registerCommandsIn(path) {
         readdir(path, (err, files) => {
             if (err) {
@@ -30,8 +61,16 @@ export default class CommandStore extends Collection {
             if (commandFiles.length == 0)
                 return;
 
+            let cPath, req;
+
             for (let commandFile of commandFiles) {
-                // TODO: Not certain about the logistic on this part
+                cPath = join(path, commandFile);
+
+                req = require(cPath);
+
+                if (typeof req.default === 'function') {
+                    this.registerCommand(req.default);
+                }
             }
         })
     }
