@@ -1,4 +1,5 @@
 import { getDB } from '../database';
+import { format, MysqlError } from 'mysql';
 import Advertisement from './Advertisement';
 
 
@@ -8,9 +9,8 @@ export default class Tag {
      * Constructs a basic model for tag
      * 
      * @param {string} name Name of the tag 
-     * @param {number} [created_at = -1] Unix timestamp this tag was created at (optional)
      */
-    constructor(name, created_at = -1) {
+    constructor(name) {
         /**
          * Name of the tag
          * 
@@ -23,6 +23,15 @@ export default class Tag {
          * 
          * @type {number}
          */
+        this.created_at = -1;
+    }
+
+    /**
+     * Sets the created at unix timestamp
+     * 
+     * @param {number} created_at - Unix timestamp this was created at
+     */
+    setCreatedAt(created_at) {
         this.created_at = created_at;
     }
 
@@ -30,16 +39,15 @@ export default class Tag {
      * Inserts a new tag into database
      * 
      * @async
-     * @return {Error | null}
+     * @return {MysqlError | null}
      */
     async insert() {
-        const stmt = getDB().prepare("INSERT INTO tags (`name`) VALUES (?)");
+        const stmt = format(
+            "INSERT INTO tags (`name`) VALUES (?)",
+            [this.name],
+        );
 
-        stmt.bind(this.name);
-
-        stmt.run(err => {
-            return err;
-        })
+        return getDB().query(stmt, err => err);
     }
 
     /**
@@ -49,16 +57,17 @@ export default class Tag {
      * @return {Advertisement[]}
      */
     async searchByTag() {
-        const stmt = getDB().prepare("SELECT * FROM advertisements WHERE `tag` = ?");
+        const stmt = format(
+            "SELECT * FROM advertisements WHERE `tag` = ?",
+            [this.name],
+        );
 
-        stmt.bind(this.name);
-
-        stmt.all((err, rows) => {
+        getDB().query(stmt, (err, results) => {
             if (err) {
-                throw new Error(err);
+                throw err;
             }
 
-            return rows.map(v => {
+            return results.map(v => {
                 let a = new Advertisement(
                     this.name,
                     v.players,

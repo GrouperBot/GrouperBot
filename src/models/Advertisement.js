@@ -1,4 +1,6 @@
 import Tag from './Tag';
+import { format, MysqlError } from 'mysql';
+import { getDB } from '../database';
 
 export default class Advertisement {
 
@@ -76,18 +78,14 @@ export default class Advertisement {
      * Inserts a new advertisement into database
      * 
      * @async
-     * @return {Error | null}
+     * @return {MysqlError | null}
      */
     async insert() {
-        const stmt = getDB().prepare("INSERT INTO advertisements (`tag`, `players`, `description`, `expiration`) VALUES (?, ?, ?, ?)");
+        const stmt = format(
+            "INSERT INTO advertisements (`tag`, `players`, `description`, `expiration`) VALUES (?, ?, ?, ?)",
+            [this.tag.name, this.players, this.description, this.expiration]
+        );
 
-        stmt.bind(this.tag.name);
-        stmt.bind(this.players);
-        stmt.bind(this.description);
-        stmt.bind(this.expiration);
-
-        stmt.run(err => {
-            return err;
-        })
+        return getDB().query(stmt, err => err);
     }
 }

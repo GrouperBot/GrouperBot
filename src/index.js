@@ -3,7 +3,12 @@ import { join } from 'path';
 import GrouperClient from './structures/GrouperClient';
 import { initialize } from './database';
 
-initialize(process.env.DATABASE_FILE);
+initialize({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+});
 
 const client = new GrouperClient({
     disableEveryone: true,

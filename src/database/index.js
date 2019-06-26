@@ -1,33 +1,33 @@
-import { Database as SQLite } from 'sqlite3';
+import { createConnection, ConnectionConfig, Connection } from 'mysql';
 import { CreateTagTable, CreateAdvertisementTable } from '../util/Constants';
 
 /**
  * Database object
  * 
- * @type {SQLite}
+ * @type {Connection}
  */
 let database = null;
 
 /**
- * Prepares database for r/w
+ * Initialize connection to database
  * 
- * @param {string} filename SQLite database filename
+ * @param {ConnectionConfig} config Connection configuration
  */
-export function initialize(filename) {
-    database = new SQLite(__dirname + '/storage/' + filename);
+export function initialize(config) {
+    database = createConnection(config);
 
     // Should we be attempting to create database here?
-    database.run(CreateTagTable);
-    database.run(CreateAdvertisementTable);
+    database.query(CreateTagTable);
+    database.query(CreateAdvertisementTable);
 }
 
 /**
- * Obtains the database object
+ * Obtains the database Connection object
  * 
- * @return {SQLite}
+ * @return {Connection}
  */
 export function getDB() {
-    if (database == null) {
+    if (database.state != 'connected') {
         throw new Error('Database uninitialized');
     }
 
