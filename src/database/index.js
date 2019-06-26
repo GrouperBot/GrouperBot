@@ -14,7 +14,7 @@ let database = null;
  * @param {string} filename SQLite database filename
  */
 export function initialize(filename) {
-    database = new SQLite(__dirname + '/' + filename);
+    database = new SQLite(__dirname + '/storage/' + filename);
 
     // Should we be attempting to create database here?
     database.run(CreateTagTable);

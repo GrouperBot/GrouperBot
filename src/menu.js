@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 
+// TODO: Refactor into structures and convert to es6 import/export
+
 class DiscordMessageMenu {
     constructor(authormessage, title, color, displaycount) {
         this.menu = [];

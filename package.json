@@ -4,11 +4,17 @@
     "description": "A discord bot whose focus is centered around the idea that no gamer should play alone. In the world of discord, with hundreds of thousands of users to play with, there's just no reason for it.",
     "repository": "https://github.com/dhw19/LFG-Bot.git",
     "scripts": {
-        "start": "node index.js"
+        "start": "babel src -d build && node build/index.js",
+        "build": "babel src -d build"
     },
     "dependencies": {
         "discord.js": "^11.5.1",
         "dotenv": "^8.0.0",
         "sqlite3": "^4.0.9"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.4.4",
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5"
     }
 }

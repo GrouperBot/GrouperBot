@@ -1,6 +1,5 @@
-// npm requirements
-require('dotenv').config();
-
+import './env';
+import { join } from 'path';
 import GrouperClient from './structures/GrouperClient';
 import { initialize } from './database';
 
@@ -13,7 +12,7 @@ const client = new GrouperClient({
 
 // TODO: Call to handler to load advertisements and tags
 
-client.commands.registerCommandsIn(path.join(__dirname, 'commands'));
+client.commands.registerCommandsIn(join(__dirname, 'commands'));
 client.hookRouter();
 
 client.on('guildCreate', (g) => {

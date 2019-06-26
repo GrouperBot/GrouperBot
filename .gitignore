@@ -62,3 +62,6 @@ typings/
 
 # Storage
 storage/*
+
+# Babel Build
+build/*

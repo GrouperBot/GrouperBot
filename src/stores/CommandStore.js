@@ -9,7 +9,8 @@ export default class CommandStore extends Collection {
      * @param {GrouperClient} client 
      */
     constructor(client) {
-        
+        super();
+
         /**
          * GrouperClient
          * 

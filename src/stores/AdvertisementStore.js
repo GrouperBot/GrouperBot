@@ -9,6 +9,7 @@ export default class AdvertisementStore extends Collection {
      * @param {GrouperClient} client 
      */
     constructor(client) {
+        super();
         
         /**
          * GrouperClient
