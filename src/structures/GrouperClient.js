@@ -25,7 +25,7 @@ export default class GrouperClient extends Client {
          * 
          * @type {string[]}
          */
-        this.developers = options.developers.split(',');
+        this.developers = options.developers ? options.developers.split(',') : [];
 
         /**
          * Client's tag store
