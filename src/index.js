@@ -2,6 +2,7 @@ import './env';
 import { join } from 'path';
 import GrouperClient from './structures/GrouperClient';
 import { initialize } from './database';
+import log from './log';
 
 const client = new GrouperClient({
     disableEveryone: true,
@@ -19,17 +20,28 @@ client
     .hook()
     .commands.registerCommandsIn(join(__dirname, 'commands'))
 
-client.on('guildCreate', (g) => {
-    console.log(`joining ${g.name}`);
-});
-client.on('guildDelete', (g) => {
-    console.log(`leaving ${g.name}`);
-});
+client
+    .on('guildCreate', g => {
+        log.debug(`Client#guildCreate -> ${g.name}`);
+    })
+    .on('guildDelete', g => {
+        log.debug(`Client#guildDelete -> ${g.name}`);
+    })
+    .on('ready', () => {
+        log.info('Client#ready');
+    })
+    .on('databaseInitialized', () => {
+        log.info('Client#Initialized');
+    })
+    .on('tagsLoaded', size => {
+        log.info(`Client#tagsLoaded -> ${size}`);
+    })
+    .on('commandRegistered', command => {
+        log.debug(`Client#commandRegistered -> ${command.name}`);
+    })
+    .on('error', e => {
+        log.error(e);
+    })
 
-client.on('ready', () => {
-    console.log('\'ready\' event executed. lfg bot has started');
-});
-
-client.on('error', console.error);
-
+log.debug('test');
 client.login(process.env.BOT_TOKEN);

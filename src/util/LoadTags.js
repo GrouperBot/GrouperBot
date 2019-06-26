@@ -26,8 +26,9 @@ async function LoadTags(client) {
          * Emitted when tags are loaded from database
          * 
          * @event GrouperClient#tagsLoaded
+         * @param {number} client.tags.size - Number of tags loaded
          */
-        client.emit('tagsLoaded');
+        client.emit('tagsLoaded', client.tags.size);
     })
 }
 

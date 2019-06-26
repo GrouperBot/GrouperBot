@@ -50,6 +50,11 @@ export default class CommandStore extends Collection {
         this.client.emit('commandRegistered', command);
     }
 
+    /**
+     * Register commands within a directory
+     * 
+     * @param {string} path 
+     */
     async registerCommandsIn(path) {
         readdir(path, (err, files) => {
             if (err) {
