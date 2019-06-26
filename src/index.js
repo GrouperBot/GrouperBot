@@ -43,5 +43,4 @@ client
         log.error(e);
     })
 
-log.debug('test');
 client.login(process.env.BOT_TOKEN);

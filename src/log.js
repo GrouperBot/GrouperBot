@@ -30,6 +30,4 @@ const log = createLogger({
     ]
 });
 
-log.info('test');
-
 export default log;
