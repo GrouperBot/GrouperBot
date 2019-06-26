@@ -1,4 +1,4 @@
-import GrouperClient from '../structures/GrouperClient';
+import GrouperClient from './GrouperClient';
 import  { Message } from 'discord.js';
 
 export default class GrouperCommandRouter {
