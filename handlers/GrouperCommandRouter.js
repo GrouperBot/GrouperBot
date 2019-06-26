@@ -1,4 +1,5 @@
 import GrouperClient from '../structures/GrouperClient';
+import  { Message } from 'discord.js';
 
 export default class GrouperCommandRouter {
 
@@ -30,7 +31,12 @@ export default class GrouperCommandRouter {
         this.prefix = options.prefix;
     }
 
-    hook() {
+    /**
+     * Route a message to a command handler if available
+     * 
+     * @param {Message} message 
+     */
+    route(message) {
         // TODO: implementation
     }
 }
