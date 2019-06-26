@@ -4,46 +4,52 @@ const discord = require('discord.js');
 const DiscordMessageMenu = require('../menu.js');
 
 module.exports.run = async (client, message, args, prefix, tagmngr, db) => {
-
   args.shift(); // remove first element of array (command name)
 
-  // length of arg 0 means show ads
+  // display menu
   if (args.length == 0) {
-    // TODO: Make a way to append data to the json
-    return
-  } else {
-    // Searching Algorithm of finding tags
-    if ( args[0].toLowerCase() != "new" ) {
-      // Nested loop to iterate through all the json data to find tag
-      for ( tag of Object.keys( db.data ) ) {
+    // TODO: Show nice embed error w/ how to properly search tags.
+    return;
+  }
 
-        // Found Tag
-        if (tag.toLowerCase() == args[0].toLowerCase()){
-          let menu = new DiscordMessageMenu(message, `Ads Board - ${tag.toUpperCase()}`, "#964B00", 4);
-          menu.buildMenu(db.data[tag]);
-          menu.displayPage(0);
-          return;
-        }
-      }
+  let param1 = args[0].toLowerCase();
+  if (param1 == 'new') {
+    args.shift() // remove "new" from args
 
-      message.reply( `Sorry I couldn't find the tag " ${args[0]} " ` )
-    } else {
-      args.shift() // remove "new" from args
-
-      if (args.length >= 3){
-
-        // if user tag in tag list then add it two database
-        if (tagmngr.data.includes(args[0])) {
-          db.data[args[0]].push( {"description" : args.slice( 3 ).join(" "),"author" : message.author.tag,"playernum" : args[1],"timestamp" : new Date()} )
-          message.reply("Your Ad has been added to our boards :smile:")
-          db.Close()
-          // db.Save()
-        } else {
-          message.reply(`${args[0]} isn't in db`)
-        }
-      }
-      }
+    if (args.length < 3){
+      // TODO: Show nice embed error showing how to use this command
+      return;
     }
+
+    let tag = args[0].toLowerCase();
+    if (!tagmngr.TagExists(tag)) {
+      // TODO: Show nice embed error w/ valid tags if the one they typed was invalid, and a way to get new tags added.
+      // it's also possible that they typed a valid tag, but we just don't have any ads for it, tell them that.
+      message.reply(`${args[0]} isn't in db`);
+      return;
+    }
+
+    let dbentry = {
+      "description" : args.slice( 2 ).join(" "),
+      "author" : message.author.tag,
+      "playernum" : args[1],
+      "timestamp" : new Date()
+    }
+
+    db.AddEntry(tag, dbentry)
+    message.reply("Your Ad has been added to our boards :smile:")
+    return;
+  } 
+
+  for (tag of Object.keys(db.data)) {
+    if (tag == param1) {
+      let menu = new DiscordMessageMenu(message, `Ads Board - ${tag.toUpperCase()}`, "#964B00", 4);
+      menu.buildMenu(db.GetItems(tag));
+      menu.displayPage(0);
+      return;
+    }
+  }
+
 }
 
 module.exports.help = {
