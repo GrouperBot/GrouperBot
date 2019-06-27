@@ -58,4 +58,13 @@ export default class GrouperCommand {
     async run(message) {
         throw new Error(`${this.constructor.name} doesn't have a run() method.`);
     }
+
+    /**
+     * Format command  (prefix + command name)
+     * 
+     * @return {string}
+     */
+    toString() {
+        return this.client.router.prefix + this.name.toLowerCase();
+    }
 }
