@@ -2,7 +2,6 @@ import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
 import Tag from '../models/Tag.js';
-import { RichEmbed } from 'discord.js';
 
 export default class TagCommand extends GrouperCommand {
     constructor(client) {
