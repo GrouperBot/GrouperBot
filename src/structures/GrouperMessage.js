@@ -26,6 +26,18 @@ export default class GrouperMessage {
     }
 
     /**
+     * Shortcut to this.message.channel.send()
+     * 
+     * @param {StringResolvable} content
+     * @param {MessageOptions | RichEmbed | Attachment} [options={}]
+     * 
+     * @return {Promise<Message | Message[]}
+     */
+    dispatch(content, options = {}) {
+        return this.message.channel.send(content, options)
+    }
+
+    /**
      * Argument string (excluding command name)
      * 
      * @return {string}
