@@ -47,7 +47,7 @@ export default class GrouperClient extends Client {
          * @type {GrouperCommandRouter}
          */
         this.router = new GrouperCommandRouter(this, {
-            prefix: options.prefix ? options.prefix : ';',
+            prefix: options.prefix || ';',
         });
     }
 

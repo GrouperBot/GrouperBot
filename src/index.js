@@ -5,6 +5,7 @@ import { initialize } from './database';
 import log from './log';
 
 const client = new GrouperClient({
+    prefix: process.env.BOT_PREFIX,
     disableEveryone: true,
     developers: process.env.DEVELOPERS,
 });
