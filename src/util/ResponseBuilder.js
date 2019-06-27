@@ -36,14 +36,17 @@ export default class ResponseBuilder extends RichEmbed {
          * 
          * @type {ColorResolvable}
          */
-        this.successColor = options.successColor || "00E676";
+        this.successColor = options.successColor || "#00E676";
 
         /**
          * Fail response color
          * 
          * @type {ColorResolvable}
          */
-        this.failColor = options.failColor || "DD2C00";
+        this.failColor = options.failColor || "#DD2C00";
+
+        // setColor passes through color resolver
+        this.setColor(this.successful ? this.successColor : this.failColor);
     }
 
     /**
@@ -53,6 +56,8 @@ export default class ResponseBuilder extends RichEmbed {
      */
     setState(successful) {
         this.successful = successful;
+
+        this.setColor(this.successful ? this.successColor : this.failColor);
 
         return this;
     }
