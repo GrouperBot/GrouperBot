@@ -47,15 +47,11 @@ export default class GrouperCommandRouter {
         // Remove the prefix and split it into array, and match first item
         const sCommand = message.content.substr(this.prefix.length).match(ArgRegex)[0];
 
-        log.debug(sCommand);
-
         const fCommand = this.client.commands.find(f => f.name === sCommand);
 
         if (fCommand === null) {
             return;
         }
-
-        log.debug('test flow');
 
         if (fCommand.developerOnly && !this.client.isDeveloper(message.author.id)) {
             return;
