@@ -1,56 +1,124 @@
+import GrouperCommand from '../structures/GrouperCommand.js';
+import GrouperMessage from '../structures/GrouperMessage';
+import ResponseBuilder from '../util/ResponseBuilder.js';
+import Advertisement from '../models/Advertisement.js';
+import to from 'await-to-js';
+
 const DiscordMessageMenu = require('../menu.js');
 
-module.exports.run = async (client, message, args, prefix, tagmngr, db) => {
-  args.shift(); // remove first element of array (command name)
-
-  // display menu
-  if (args.length == 0) {
-    // TODO: Show nice embed error w/ how to properly search tags.
-    return;
-  }
-
-  let param1 = args[0].toLowerCase();
-  if (param1 == 'new') {
-    args.shift() // remove "new" from args
-
-    if (args.length < 3){
-      // TODO: Show nice embed error showing how to use this command
-      return;
+export default class LFGCommand extends GrouperCommand {
+    constructor(client) {
+        super(client, {
+            name: 'LFG',
+            description: 'Add or return list of advertisements',
+        });
     }
 
-    let tag = args[0].toLowerCase();
-    if (!tagmngr.TagExists(tag)) {
-      // TODO: Show nice embed error w/ valid tags if the one they typed was invalid, and a way to get new tags added.
-      // it's also possible that they typed a valid tag, but we just don't have any ads for it, tell them that.
-      message.reply(`${args[0]} isn't in db`);
-      return;
+    /**
+     * Runner for tags command
+     * 
+     * @param {GrouperMessage} grouper
+     */
+    async run(grouper) {
+        const sArgs = grouper.getArgs();
+
+        if (sArgs.length == 0) {
+            return this.dispatchUsage(grouper);
+        }
+
+        const response = new ResponseBuilder();
+
+        switch (sArgs[0]) {
+            case 'new':
+
+                if (sArgs.length < 4) {
+                    return this.dispatchUsage(grouper);
+                }
+
+                const tags = sArgs[1].split(',');
+
+                for (let tag of tags) {
+                    if (!this.client.tags.has(tag)) {
+                        response
+                            .setTitle('Invalid tag')
+                            .setState(false)
+                            .setDescription(`Tag ${tag} does not exist`);
+
+                        return grouper.dispatch(response);
+                    }
+                }
+
+                let aErr;
+
+                [ aErr ] = await to(
+                    new Advertisement(
+                        tags,
+                        parseInt(sArgs[2]),
+                        grouper.joinArgAfter(3),
+                    ).insert()
+                );
+
+                if (aErr) {
+                    response
+                        .setTitle('Creation failed')
+                        .setState(false)
+                        .setDescription('Database insertion failed')
+
+                    return grouper.dispatch(response);
+                }
+
+                response
+                    .setTitle('Advertisement created!')
+                    .setDescription('You have successfully posted an advertisement')
+                
+                return grouper.dispatch(response);
+            default:
+                const dTags = sArgs[0].split(',');
+
+                let err, advertisements;
+
+                [ err, advertisements ] = await to(
+                    Advertisement.searchByTags(dTags)
+                );
+
+                if (err) {
+                    response
+                        .setTitle('Failed to retrieve advertisements')
+                        .setState(false)
+                        .setDescription(`Failed to retrieve advertisements with tag(s): ${dTags.join(', ')}`)
+                    
+                    grouper.dispatch(response);
+                }
+
+                //TODO: Check advertisements length and display no results found
+
+                response
+                    .setTitle(`Latest 25 Advertisements Tags: [${dTags.join(', ')}]`)
+
+                for (let ad of advertisements) {
+                    response.addField(
+                        `Players needed: ${ad.players} (${ad.tags.map(t => t.name).join(', ')})`,
+                        ad.description
+                    );
+                }
+
+                grouper.dispatch(response);
+        }
     }
 
-    let dbentry = {
-      "description" : args.slice( 2 ).join(" "),
-      "author" : message.author.tag,
-      "playernum" : args[1],
-      "timestamp" : new Date()
+    /**
+     * Utility/helper for this command
+     * 
+     * @param {GrouperMessage} grouper
+     */
+    dispatchUsage(grouper) {
+        const response = new ResponseBuilder();
+
+        response
+            .setTitle('Command Usage')
+            .addField('Search by tags', `${this.toString()} \`tagName\``)
+            .addField('Add Advertisement', `${this.toString()} new \`tag1,tag2\` \`teamSize\` \`description\``)
+
+        return grouper.dispatch(response);
     }
-
-    db.AddEntry(tag, dbentry)
-    message.reply("Your Ad has been added to our boards :smile:")
-    return;
-  } 
-
-  for (tag of Object.keys(db.data)) {
-    if (tag == param1) {
-      let menu = new DiscordMessageMenu(message, `Ads Board - ${tag.toUpperCase()}`, "#964B00", 4);
-      menu.buildMenu(db.GetItems(tag));
-      menu.displayPage(0);
-      return;
-    }
-  }
-
-}
-
-module.exports.help = {
-    name: "lfg",
-    description: "lfg command",
-    dev: false
 }

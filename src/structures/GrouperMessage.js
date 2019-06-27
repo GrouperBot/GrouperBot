@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, StringResolvable, MessageOptions, RichEmbed, Attachment } from "discord.js";
 import GrouperCommand from "./GrouperCommand";
 import { ArgRegex } from "../util/constants";
 
@@ -33,7 +33,7 @@ export default class GrouperMessage {
      * 
      * @return {Promise<Message | Message[]}
      */
-    dispatch(content, options = {}) {
+    dispatch(content, options) {
         return this.message.channel.send(content, options)
     }
 
@@ -66,5 +66,16 @@ export default class GrouperMessage {
         args.shift()
 
         return args;
+    }
+
+    /**
+     * Piece together remaining args as a string
+     * 
+     * @param {number} index - Index of the arg to start joining together 
+     * 
+     * @return {string}
+     */
+    joinArgAfter(index) {
+        return this.getArgs().splice(0, index).join(' ');
     }
 }

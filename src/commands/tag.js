@@ -2,6 +2,7 @@ import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
 import Tag from '../models/Tag.js';
+import { RichEmbed } from 'discord.js';
 
 export default class TagCommand extends GrouperCommand {
     constructor(client) {
@@ -27,9 +28,7 @@ export default class TagCommand extends GrouperCommand {
                 .setState(false)
                 .setDescription('You botched it') // TODO: may need alternative wording
 
-            grouper.dispatch(response);
-
-            return;
+            return grouper.dispatch(response);
         }
 
         const nTag = new Tag(sArgs[1]);
@@ -42,9 +41,7 @@ export default class TagCommand extends GrouperCommand {
                         .setState(false)
                         .setDescription(`Tag "${nTag.name}" already exist within the database`)
 
-                    grouper.dispatch(response);
-
-                    return;
+                    return grouper.dispatch(response);
                 }
 
                 response
@@ -65,9 +62,7 @@ export default class TagCommand extends GrouperCommand {
                         .setState(false)
                         .setDescription('Attempted to remove a tag that does not exist')
 
-                    grouper.dispatch(response);
-
-                    return;
+                    return grouper.dispatch(response);
                 }
 
                 response
