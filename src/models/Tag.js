@@ -21,6 +21,8 @@ export default class Tag {
         /**
          * Unix timestamp this tag was created at
          * 
+         * @note This is not available within Achievement.searchByTags, you must reference client tag store for it.
+         * 
          * @type {number}
          */
         this.created_at = -1;
@@ -63,39 +65,5 @@ export default class Tag {
         );
 
         return getDB().query(stmt, err => err);
-    }
-
-    /**
-     * Search advertisement by tag
-     * 
-     * @async
-     * @return {Advertisement[]}
-     */
-    async searchByTag() {
-        const stmt = format(
-            "SELECT * FROM advertisements WHERE `tag` = ?",
-            [this.name],
-        );
-
-        getDB().query(stmt, (err, results) => {
-            if (err) {
-                throw err;
-            }
-
-            return results.map(v => {
-                let a = new Advertisement(
-                    this.name,
-                    v.players,
-                    v.description,
-                    v.expiration,
-                    v.created_at,
-                );
-
-                a.setID(v.id);
-                a.setCreatedAt(v.created_at);
-
-                return a;
-            })
-        })
     }
 }
