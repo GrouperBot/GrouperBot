@@ -1,5 +1,5 @@
 import { Client, ClientOptions } from 'discord.js';
-import { LoadTags } from '../util/LoadTags';
+import LoadTags from '../util/LoadTags';
 import TagStore from '../stores/TagStore';
 import CommandStore from '../stores/CommandStore';
 import GrouperCommandRouter from './GrouperCommandRouter';

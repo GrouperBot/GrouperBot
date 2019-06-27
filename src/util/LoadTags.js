@@ -8,7 +8,7 @@ import Tag from '../models/Tag';
  * 
  * @param {GrouperClient} client 
  */
-async function LoadTags(client) {
+export default async function LoadTags(client) {
     getDB().query("SELECT `name`, `created_at` FROM `tags`", (err, results) => {
         if (err) {
             throw err;
@@ -31,7 +31,3 @@ async function LoadTags(client) {
         client.emit('tagsLoaded', client.tags.size);
     })
 }
-
-export {
-    LoadTags,
-};
