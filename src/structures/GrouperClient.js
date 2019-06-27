@@ -51,6 +51,15 @@ export default class GrouperClient extends Client {
         });
     }
 
+    /**
+     * Checks if user ID is within developers array
+     * 
+     * @param {string} id ID of the user
+     */
+    isDeveloper(id) {
+        return this.developers.includes(id);
+    }
+
     hook() {
         this.on('message', (message) => {
             this.router.route(message);

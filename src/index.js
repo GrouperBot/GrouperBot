@@ -31,7 +31,9 @@ client
         log.info('Client#ready');
     })
     .on('databaseInitialized', () => {
-        log.info('Client#Initialized');
+        log.info('Client#databaseInitialized');
+
+        client.login(process.env.BOT_TOKEN);
     })
     .on('tagsLoaded', size => {
         log.info(`Client#tagsLoaded -> ${size}`);
@@ -42,5 +44,3 @@ client
     .on('error', e => {
         log.error(e);
     })
-
-client.login(process.env.BOT_TOKEN);

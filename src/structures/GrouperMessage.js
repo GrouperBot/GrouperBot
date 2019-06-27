@@ -2,9 +2,20 @@ import { Message } from "discord.js";
 import GrouperCommand from "./GrouperCommand";
 import { ArgRegex } from "../util/constants";
 
-export default class GrouperMessage extends Message {
-    constructor(...args) {
-        super(...args);
+export default class GrouperMessage {
+
+    /**
+     * Constructs a grouper message
+     * 
+     * @param {Message} message 
+     */
+    constructor(message) {
+        /**
+         * Underlying DJS message
+         * 
+         * @type {Message}
+         */
+        this.message = message;
 
         /**
          * Command that this message triggers
@@ -12,13 +23,15 @@ export default class GrouperMessage extends Message {
          * @type {GrouperCommand}
          */
         this.command = null;
+    }
 
-        /**
-         * Argument string (excluding command name)
-         * 
-         * @type {string}
-         */
-        this.argString = this.content.match(ArgRegex).shift().join(' ');
+    /**
+     * Argument string (excluding command name)
+     * 
+     * @return {string}
+     */
+    getArgString() {
+        return this.message.content.match(ArgRegex).slice(1).join(' ');
     }
 
     /**
@@ -36,7 +49,7 @@ export default class GrouperMessage extends Message {
      * @return {string[]}
      */
     getArgs() {
-        let args = this.content.match(ArgRegex)
+        let args = this.message.content.match(ArgRegex)
 
         args.shift()
 

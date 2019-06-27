@@ -8,6 +8,7 @@
         "build": "babel src -d build"
     },
     "dependencies": {
+        "await-to-js": "^2.1.1",
         "discord.js": "^11.5.1",
         "dotenv": "^8.0.0",
         "mysql": "^2.17.1",

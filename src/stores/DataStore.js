@@ -22,7 +22,7 @@ export default class DataStore extends Collection {
      * @return {*}
      */
     add(id, data) {
-        const existing = this.get(id);
+        const existing = this.has(id);
 
         if (existing) {
             return existing;

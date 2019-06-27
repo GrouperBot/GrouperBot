@@ -13,13 +13,13 @@ export default class TagsCommand extends GrouperCommand {
     /**
      * Runner for tags command
      * 
-     * @param {GrouperMessage} message 
+     * @param {GrouperMessage} grouper
      */
-    async run(message) {
+    async run(grouper) {
         // TODO: needs refactoring
-        let menu = new DiscordMessageMenu(message, `Available Tags`, "#b8bbc1", 15);
+        let menu = new DiscordMessageMenu(grouper.message, `Available Tags`, "#b8bbc1", 15);
 
-        menu.buildMenu(this.client.tags.array())
+        menu.buildMenu(this.client.tags.getNameArray());
         menu.setTagList(true);
         menu.displayPage(0);
     }

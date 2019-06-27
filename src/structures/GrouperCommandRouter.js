@@ -1,5 +1,8 @@
 import GrouperClient from './GrouperClient';
 import  { Message } from 'discord.js';
+import { ArgRegex } from "../util/constants";
+import GrouperMessage from './GrouperMessage';
+import log from '../log';
 
 export default class GrouperCommandRouter {
 
@@ -37,6 +40,31 @@ export default class GrouperCommandRouter {
      * @param {Message} message 
      */
     route(message) {
-        // TODO: implementation
+        if (!message.content.startsWith(this.prefix)) {
+            return;
+        }
+
+        // Remove the prefix and split it into array, and match first item
+        const sCommand = message.content.substr(this.prefix.length).match(ArgRegex)[0];
+
+        log.debug(sCommand);
+
+        const fCommand = this.client.commands.find(f => f.name === sCommand);
+
+        if (fCommand === null) {
+            return;
+        }
+
+        log.debug('test flow');
+
+        if (fCommand.developerOnly && !this.client.isDeveloper(message.author.id)) {
+            return;
+        }
+
+        const m = new GrouperMessage(message);
+
+        m.setCommand(fCommand);
+
+        fCommand.run(m);
     }
 }

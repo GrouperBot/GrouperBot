@@ -11,4 +11,13 @@ export default class TagStore extends DataStore {
     constructor(client) {
         super(client);
     }
+
+    /**
+     * Get an array of names
+     * 
+     * @return {string[]}
+     */
+    getNameArray() {
+        return this.map(v => v.name);
+    }
 }

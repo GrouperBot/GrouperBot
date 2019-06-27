@@ -51,6 +51,21 @@ export default class Tag {
     }
 
     /**
+     * Deletes a tag from database
+     * 
+     * @async
+     * @return {MysqlError | null}
+     */
+    async remove() {
+        const stmt = format(
+            "DELETE FROM tags WHERE `name` = ?",
+            [this.name],
+        );
+
+        return getDB().query(stmt, err => err);
+    }
+
+    /**
      * Search advertisement by tag
      * 
      * @async

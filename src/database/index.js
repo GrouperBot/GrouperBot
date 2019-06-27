@@ -38,7 +38,7 @@ export function initialize(client, config) {
  * @return {Connection}
  */
 export function getDB() {
-    if (database.state != 'connected') {
+    if (!['authenticated', 'connected'].includes(database.state)) {
         throw new Error('Database uninitialized');
     }
 

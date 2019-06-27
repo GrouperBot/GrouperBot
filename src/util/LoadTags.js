@@ -21,6 +21,8 @@ async function LoadTags(client) {
 
             client.tags.set(result.name, tag);
         }
+        
+        console.log('test tags');
 
         /**
          * Emitted when tags are loaded from database
