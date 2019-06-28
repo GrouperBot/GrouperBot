@@ -19,7 +19,7 @@ export default class HelpCommand extends GrouperCommand {
         const sArgs = grouper.getArgs();
 
         const response = new ResponseBuilder();
-
+        response.setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/information-source_2139.png");
         if (sArgs.length == 0) {
             response
                 .setTitle('Command Help List')
