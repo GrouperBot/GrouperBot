@@ -11,7 +11,7 @@ export default class ResponseBuilder extends RichEmbed {
     /**
      * @typedef {MessageEmbed} BuilderOptions
      * @property {boolean} [successful=true]
-     * @property {ColorResolvable} [successColor=00E676]
+     * @property {ColorResolvable} [successColor=00FFFF]
      * @property {ColorResolvable} [failColor=DD2C00]
      */
 
