@@ -48,7 +48,8 @@ export default class LFGCommand extends GrouperCommand {
                     }
                 }
 
-                let players = parseInt(sArgs[2]);
+                let players = parseInt(sArgs[2], 10);
+
                 if (!players) {
                     return this.dispatchUsage(grouper);
                 }
