@@ -1,4 +1,4 @@
-import { Message, StringResolvable, MessageOptions, RichEmbed, Attachment } from "discord.js";
+import { Message, StringResolvable, MessageOptions, RichEmbed, Attachment, Author } from "discord.js";
 import GrouperCommand from "./GrouperCommand";
 import { ArgRegex } from "../util/Constants";
 
@@ -37,6 +37,14 @@ export default class GrouperMessage {
         return this.message.channel.send(content, options)
     }
 
+    /**
+     * Shortcut to this.message.author
+     * 
+     * @return {Author}
+     */
+    getAuthor() {
+        return this.message.author;
+    }
     /**
      * Argument string (excluding command name)
      * 
