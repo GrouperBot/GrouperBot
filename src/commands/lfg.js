@@ -115,19 +115,24 @@ export default class LFGCommand extends GrouperCommand {
                     tEmbed = new ResponseBuilder();
 
                     tEmbed
-                        .setTitle(`Advertisements | Tags: [${dTags.join(', ')}]`)
-                        .setDescription('\u200B');
+                        .setTitle(`Join a group! | Searching for: ${dTags.join(', ')}`)
+                        .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/clipboard_1f4cb.png")
+                        .setDescription("Join up with one of the groups below to find some new friends!");
 
                     for (let inner of outer) {
                         counter++;
 
                         tEmbed.addField(
-                            `[${inner.tags.map(t => t.name).join(', ')}] | Players needed: ${inner.players}`,
-                            `\`\`\`${inner.description}\`\`\` Posted by ${inner.posterTag} | ${inner.getTimeLapsed()}`,
+                            `\u200B`,
+                            `\`\`\`scheme\n`
+                            + `[+] Tags: ${inner.tags.map(t => t.name).join(', ')}\n`
+                            + `[+] Players needed: ${inner.players}\n`
+                            + `[+] Description: ${inner.description}\n`
+                            + `\`\`\` *Posted by ${inner.posterTag} ${inner.getTimeLapsed()}*`,
                         );
 
-                        if (counter < outer.length)
-                            tEmbed.addBlankField();
+                        /*if (counter < outer.length)
+                            tEmbed.addBlankField();*/
                     }
 
                     embeds.push(tEmbed);
