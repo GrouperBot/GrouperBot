@@ -1,6 +1,8 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
-import DiscordMessageMenu from '../menu';
+import ResponseBuilder from '../util/ResponseBuilder';
+import { Embeds } from 'discord-paginationembed';
+import Chunk from '../util/Chunk';
 
 export default class TagsCommand extends GrouperCommand {
     constructor(client) {
@@ -16,11 +18,29 @@ export default class TagsCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async run(grouper) {
-        // TODO: needs refactoring
-        let menu = new DiscordMessageMenu(grouper.message, `Available Tags`, "#b8bbc1", 15);
+        let embeds = [];
 
-        menu.buildMenu(this.client.tags.getNameArray());
-        menu.setTagList(true);
-        menu.displayPage(0);
+        const tChunks = Chunk(this.client.tags.getNameArray(), 25);
+
+        let tEmbed;
+
+        for (let outer of tChunks) {
+            tEmbed = new ResponseBuilder();
+
+            tEmbed.setTitle('Available tags');
+
+            for (let inner of outer) {
+                tEmbed.addField('`' + inner + '`', '\u200B', true);
+            }
+
+            embeds.push(tEmbed);
+        }
+
+        new Embeds()
+            .setArray(embeds)
+            .showPageIndicator(true)
+            .setAuthorizedUsers([grouper.message.author.id])
+            .setChannel(grouper.message.channel)
+            .build();
     }
 }

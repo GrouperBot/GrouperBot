@@ -2,9 +2,9 @@ import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
 import Advertisement from '../models/Advertisement.js';
+import { Embeds } from 'discord-paginationembed';
 import to from 'await-to-js';
-
-const DiscordMessageMenu = require('../menu.js');
+import Chunk from '../util/Chunk.js';
 
 export default class LFGCommand extends GrouperCommand {
     constructor(client) {
@@ -52,6 +52,7 @@ export default class LFGCommand extends GrouperCommand {
 
                 [ aErr ] = await to(
                     new Advertisement(
+                        grouper.message.author.id,
                         tags,
                         parseInt(sArgs[2]),
                         grouper.joinArgAfter(3),
@@ -88,22 +89,42 @@ export default class LFGCommand extends GrouperCommand {
                         .setState(false)
                         .setDescription(`Failed to retrieve advertisements with tag(s): ${dTags.join(', ')}`)
                     
-                    grouper.dispatch(response);
+                    return grouper.dispatch(response);
                 }
 
-                //TODO: Check advertisements length and display no results found
+                if (advertisements.length == 0) {
+                    response
+                        .setTitle('No results')
+                        .setDescription(`Found zero listing with tag(s): ${dTags.join(', ')}`)
 
-                response
-                    .setTitle(`Latest 25 Advertisements Tags: [${dTags.join(', ')}]`)
-
-                for (let ad of advertisements) {
-                    response.addField(
-                        `Players needed: ${ad.players} (${ad.tags.map(t => t.name).join(', ')})`,
-                        ad.description
-                    );
+                    return grouper.dispatch(response);
                 }
 
-                grouper.dispatch(response);
+                let embeds = [], tEmbed;
+
+                let tChunks = Chunk(advertisements, 5);
+
+                for (let outer of tChunks) {
+                    tEmbed = new ResponseBuilder();
+
+                    tEmbed.setTitle(`Advertisements | Tags: [${dTags.join(', ')}]`);
+
+                    for (let inner of outer) {
+                        tEmbed.addField(
+                            `Players needed ${inner.players} | Tags: [${inner.tags.map(t => t.name).join(', ')}]`,
+                            inner.description + ` | Posted by <@${inner.poster}>`,
+                        );
+                    }
+
+                    embeds.push(tEmbed);
+                }
+
+                new Embeds()
+                    .setArray(embeds)
+                    .showPageIndicator(true)
+                    .setAuthorizedUsers([grouper.message.author.id])
+                    .setChannel(grouper.message.channel)
+                    .build();
         }
     }
 

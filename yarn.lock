@@ -1041,6 +1041,10 @@ diagnostics@^1.1.1:
     enabled "1.0.x"
     kuler "1.0.x"
 
+"discord-paginationembed@https://github.com/rumblefrog/DiscordJSv11-Embed-Pagination":
+  version "0.7.7-v11"
+  resolved "https://github.com/rumblefrog/DiscordJSv11-Embed-Pagination#3f4c53dd5b6d76a5ad6d4cbd020d539f26d5dd76"
+
 discord.js@^11.5.1:
   version "11.5.1"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-11.5.1.tgz#910fb9f6410328581093e044cafb661783a4d9e8"

@@ -6,12 +6,13 @@ export default class Advertisement {
 
     /**
      * 
+     * @param {string} poster Snowflake ID of the poster
      * @param {Tag[] | string[]} tags Tag instances to use
      * @param {number} players Mumber of players required/needed
      * @param {string} description Description of advertisement
      * @param {number} expiration Unix timestamp to expire at
      */
-    constructor(tags, players, description, expiration) {
+    constructor(poster, tags, players, description, expiration) {
 
         /**
          * The ID of advertisement
@@ -19,6 +20,15 @@ export default class Advertisement {
          * @type {number}
          */
         this.id = -1;
+
+        /**
+         * The snowflake ID of the AD poster
+         * 
+         * @note Since JS is not "64bit", we resort to string instead
+         * 
+         * @type {string}
+         */
+        this.poster = poster;
 
         /**
          * Instances of tag
@@ -89,8 +99,8 @@ export default class Advertisement {
     async insert() {
         return new Promise((resolve, reject) => {
             const stmt = format(
-                "INSERT INTO advertisements (`tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?)",
-                [this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
+                "INSERT INTO advertisements (`poster`, `tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)",
+                [this.poster, this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
             );
 
             getDB().query(stmt, err => {
@@ -131,21 +141,24 @@ export default class Advertisement {
             for (let i = 1; i < tags.length; i++) {
                 sStmt += " AND FIND_IN_SET(?, `tags`) <> 0";
             }
+
+            sStmt += " AND `expiration` > UNIX_TIMESTAMP()";
     
             const stmt = format(sStmt, [...tags]);
     
             getDB().query(stmt, (err, results) => {
                 if (err) {
-                    throw err;
+                    return reject(err);
                 }
     
                 if (results.length == 0) {
-                    return [];
+                    return resolve([]);
                 }
     
                 resolve(
                     results.map(v => {
                         let a = new Advertisement(
+                            v.poster,
                             v.tags.split(','),
                             v.players,
                             v.description,

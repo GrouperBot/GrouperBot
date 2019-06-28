@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "await-to-js": "^2.1.1",
+        "discord-paginationembed": "https://github.com/rumblefrog/DiscordJSv11-Embed-Pagination",
         "discord.js": "^11.5.1",
         "dotenv": "^8.0.0",
         "mysql": "^2.17.1",
