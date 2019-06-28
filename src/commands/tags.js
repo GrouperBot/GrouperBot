@@ -44,4 +44,19 @@ export default class TagsCommand extends GrouperCommand {
             .setChannel(grouper.message.channel)
             .build();
     }
+
+    /**
+     * Utility/helper for this command
+     * 
+     * @param {GrouperMessage} grouper
+     */
+    async help(grouper) {
+        const response = new ResponseBuilder();
+
+        response
+            .setTitle('Command Usage')
+            .addField('Display tags', this.toString())
+
+        return grouper.dispatch(response);
+    }
 }

@@ -83,4 +83,20 @@ export default class TagCommand extends GrouperCommand {
                 grouper.dispatch(response);
         }
     }
+
+    /**
+     * Utility/helper for this command
+     * 
+     * @param {GrouperMessage} grouper
+     */
+    async help(grouper) {
+        const response = new ResponseBuilder();
+
+        response
+            .setTitle('Command Usage')
+            .addField('Add a tag', `${this.toString()} \`<tagName>\``)
+            .addField('Remove a tag', `${this.toString()} \`<tagName>\``)
+
+        return grouper.dispatch(response);
+    }
 }

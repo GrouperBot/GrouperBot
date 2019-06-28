@@ -60,6 +60,18 @@ export default class GrouperCommand {
     }
 
     /**
+     * Abstraction for help description
+     * 
+     * 
+     * @abstract
+     * 
+     * @param {GrouperMessage} message
+     */
+    async help(message) {
+        throw new Error(`${this.constructor.name} doesn't have a help() method.`);
+    }
+
+    /**
      * Format command  (prefix + command name)
      * 
      * @return {string}

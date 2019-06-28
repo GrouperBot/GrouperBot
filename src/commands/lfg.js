@@ -23,7 +23,7 @@ export default class LFGCommand extends GrouperCommand {
         const sArgs = grouper.getArgs();
 
         if (sArgs.length == 0) {
-            return this.dispatchUsage(grouper);
+            return this.help(grouper);
         }
 
         const response = new ResponseBuilder();
@@ -32,7 +32,7 @@ export default class LFGCommand extends GrouperCommand {
             case 'new':
 
                 if (sArgs.length < 4) {
-                    return this.dispatchUsage(grouper);
+                    return this.help(grouper);
                 }
 
                 const tags = sArgs[1].split(',');
@@ -51,7 +51,7 @@ export default class LFGCommand extends GrouperCommand {
                 let players = parseInt(sArgs[2], 10);
 
                 if (!players) {
-                    return this.dispatchUsage(grouper);
+                    return this.help(grouper);
                 }
 
                 let aErr;
@@ -148,7 +148,7 @@ export default class LFGCommand extends GrouperCommand {
      * 
      * @param {GrouperMessage} grouper
      */
-    dispatchUsage(grouper) {
+    async help(grouper) {
         const response = new ResponseBuilder();
 
         response
