@@ -76,6 +76,6 @@ export default class GrouperMessage {
      * @return {string}
      */
     joinArgAfter(index) {
-        return this.getArgs().splice(0, index).join(' ');
+        return this.getArgs().slice(index).join(' ');
     }
 }
