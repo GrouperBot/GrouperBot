@@ -69,7 +69,7 @@ export default class ResponseBuilder extends RichEmbed {
         this.successful = successful;
 
         this.setColor(this.successful ? this.successColor : this.failColor);
-
+        this.setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/cross-mark_274c.png');
         return this;
     }
 }
