@@ -54,6 +54,16 @@ export default class LFGCommand extends GrouperCommand {
                     return this.help(grouper);
                 }
 
+                let description = grouper.joinArgAfter(3);
+                if (description.length > 140) { // TODO: configurable?
+                    response
+                        .setTitle('Description too long')
+                        .setState(false)
+                        .setDescription(`Please limit your descriptions to be < 140 characters long`);
+
+                    return grouper.dispatch(response);
+                }
+
                 let aErr;
 
                 [ aErr ] = await to(
