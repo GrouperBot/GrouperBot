@@ -18,3 +18,8 @@ This bot was created for that sole purpose, connecting gamers to each other and 
 ## 📣 Usage
 Don't forget to prepend the prefix infront!
 - `help` - A tidy help menu
+
+
+## License
+
+Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
