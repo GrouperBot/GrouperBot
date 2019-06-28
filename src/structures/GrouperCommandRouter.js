@@ -1,8 +1,7 @@
 import GrouperClient from './GrouperClient';
 import  { Message } from 'discord.js';
-import { ArgRegex } from "../util/constants";
+import { ArgRegex } from "../util/Constants";
 import GrouperMessage from './GrouperMessage';
-import log from '../log';
 
 export default class GrouperCommandRouter {
 

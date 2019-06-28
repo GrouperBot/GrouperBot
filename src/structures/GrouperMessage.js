@@ -1,6 +1,6 @@
 import { Message, StringResolvable, MessageOptions, RichEmbed, Attachment } from "discord.js";
 import GrouperCommand from "./GrouperCommand";
-import { ArgRegex } from "../util/constants";
+import { ArgRegex } from "../util/Constants";
 
 export default class GrouperMessage {
 
