@@ -1,10 +1,6 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
-import Advertisement from '../models/Advertisement.js';
-import { Embeds } from 'discord-paginationembed';
-import to from 'await-to-js';
-import Chunk from '../util/Chunk.js';
 
 export default class HelpCommand extends GrouperCommand {
     constructor(client) {
@@ -20,26 +16,40 @@ export default class HelpCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async run(grouper) {
+
+        let command = null;
+
+        const args = grouper.getArgs();        
+        if (args.length > 0) {
+            command = args[0];
+        }
+
         const response = new ResponseBuilder();
         response
             .setTitle("Command Help list")
             .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f5a5.png")
             .setColor("#00FFFF")
-            .setFooter("Requested by: " + grouper.getAuthor().tag)
+            .setFooter("Requested by: " + grouper.getAuthor().tag);
 
-        // Iterate through commandfiles for every file
+        // Loop commands
+        let foundCommand = null;
         this.client.commands.forEach(element => {
-        let name = element.name;
-        let desc = element.description;
-        let dev = element.dev;
 
-        // Pushes the Feild name (command name) Description of the command into embed
-        if (!dev) {
-            response.addField(name,`	\`\`\`${desc}\`\`\` `,false)
+        // If we're searching for a command, display help page
+        if (command) {
+            if (element.name === command) {
+                foundCommand = element;
+            }
+        }
+        // Add command info for non development commands
+        if (!element.dev) {
+            response.addField(element.name,`	\`\`\`${element.description}\`\`\` `, false);
         }
         });
 
-        // Send callback
-        grouper.dispatch(response);
+        if (!foundCommand)  // no found command, show help menu
+            grouper.dispatch(response);
+        else                // command found, show specific help
+            foundCommand.help(grouper);
     }
 }
