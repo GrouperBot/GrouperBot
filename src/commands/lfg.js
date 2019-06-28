@@ -128,7 +128,7 @@ export default class LFGCommand extends GrouperCommand {
                             + `[+] Tags: ${inner.tags.map(t => t.name).join(', ')}\n`
                             + `[+] Players needed: ${inner.players}\n`
                             + `[+] Description: ${inner.description}\n`
-                            + `\`\`\` *Posted by ${inner.posterTag} ${inner.getTimeLapsed()}*`,
+                            + `\`\`\` *Posted by ${inner.posterTag} ${inner.getTimeLapsed()}* | ID #${inner.id}`,
                         );
 
                         /*if (counter < outer.length)
