@@ -34,6 +34,10 @@ export default class GrouperMessage {
      * @return {Promise<Message | Message[]}
      */
     dispatch(content, options) {
+        if (content instanceof RichEmbed) {
+            content.setFooter(`Requested by ${this.message.author.tag}`);
+        }
+
         return this.message.channel.send(content, options)
     }
 

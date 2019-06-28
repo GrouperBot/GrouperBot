@@ -39,7 +39,7 @@ export default class CommandStore extends Collection {
             throw new Error(`Command name "${command.name}" is already registered`);
         }
 
-        this.set(command.name, command);
+        this.set(command.name.toLowerCase(), command);
 
         /**
          * Emitted when a command is registered

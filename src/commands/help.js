@@ -16,40 +16,51 @@ export default class HelpCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async run(grouper) {
-
-        let command = null;
-
-        const args = grouper.getArgs();        
-        if (args.length > 0) {
-            command = args[0];
-        }
+        const sArgs = grouper.getArgs();
 
         const response = new ResponseBuilder();
-        response
-            .setTitle("Command Help list")
-            .setThumbnail("https://images.emojiterra.com/twitter/v12/512px/1f5a5.png")
-            .setColor("#00FFFF")
-            .setFooter("Requested by: " + grouper.getAuthor().tag);
 
-        // Loop commands
-        let foundCommand = null;
-        this.client.commands.forEach(element => {
+        if (sArgs.length == 0) {
+            response
+                .setTitle('Command Help List')
 
-        // If we're searching for a command, display help page
-        if (command) {
-            if (element.name === command) {
-                foundCommand = element;
+            for (const command of this.client.commands.array()) {
+                if (command.dev) {
+                    continue;
+                }
+
+                response.addField(command.name, `\`\`\`${command.description}\`\`\``)
             }
-        }
-        // Add command info for non development commands
-        if (!element.dev) {
-            response.addField(element.name,`	\`\`\`${element.description}\`\`\` `, false);
-        }
-        });
 
-        if (!foundCommand)  // no found command, show help menu
-            grouper.dispatch(response);
-        else                // command found, show specific help
-            foundCommand.help(grouper);
+            return grouper.dispatch(response);
+        }
+
+        const sCommand = sArgs[0].toLowerCase();
+
+        if (!this.client.commands.has(sCommand)) {
+            response
+                .setTitle('Command not found')
+                .setState(false)
+                .setDescription(`Unable to locate command "${sCommand}"`)
+
+            return grouper.dispatch(response);
+        }
+
+        this.client.commands.get(sCommand).help(grouper);
+    }
+
+    /**
+     * Utility/helper for this command
+     * 
+     * @param {GrouperMessage} grouper
+     */
+    async help(grouper) {
+        const response = new ResponseBuilder();
+
+        response
+            .setTitle('You goof')
+            .setDescription('You already in help!')
+
+        return grouper.dispatch(response);
     }
 }
