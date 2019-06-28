@@ -36,7 +36,7 @@ export default class ResponseBuilder extends RichEmbed {
          * 
          * @type {ColorResolvable}
          */
-        this.successColor = options.successColor || "#00E676";
+        this.successColor = options.successColor || "#00FFFF";
 
         /**
          * Fail response color
