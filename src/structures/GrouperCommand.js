@@ -62,7 +62,6 @@ export default class GrouperCommand {
     /**
      * Abstraction for help description
      * 
-     * 
      * @abstract
      * 
      * @param {GrouperMessage} message
