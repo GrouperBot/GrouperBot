@@ -84,15 +84,23 @@ export default class Advertisement {
      * Inserts a new advertisement into database
      * 
      * @async
-     * @return {MysqlError | null}
+     * @return {Promise<MysqlError | null>}
      */
     async insert() {
-        const stmt = format(
-            "INSERT INTO advertisements (`tags`, `players`, `description`, `expiration`) VALUES (?, ?, ?, ?)",
-            [this.tags.join(','), this.players, this.description, this.expiration]
-        );
+        return new Promise((resolve, reject) => {
+            const stmt = format(
+                "INSERT INTO advertisements (`tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?)",
+                [this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
+            );
 
-        return getDB().query(stmt, err => err);
+            getDB().query(stmt, err => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve();
+            })
+        });
     }
 
     /**

@@ -41,29 +41,45 @@ export default class Tag {
      * Inserts a new tag into database
      * 
      * @async
-     * @return {MysqlError | null}
+     * @return {Promise<MysqlError | null>}
      */
     async insert() {
-        const stmt = format(
-            "INSERT INTO tags (`name`) VALUES (?)",
-            [this.name],
-        );
+        return new Promise((resolve, reject) => {
+            const stmt = format(
+                "INSERT INTO tags (`name`, `created_at`) VALUES (?, ?)",
+                [this.name, Math.floor(Date.now() / 1000)],
+            );
+    
+            getDB().query(stmt, err => {
+                if (err) {
+                    reject(err);
 
-        return getDB().query(stmt, err => err);
+                    resolve();
+                }
+            });
+        });
     }
 
     /**
      * Deletes a tag from database
      * 
      * @async
-     * @return {MysqlError | null}
+     * @return {Promise<MysqlError | null>}
      */
     async remove() {
-        const stmt = format(
-            "DELETE FROM tags WHERE `name` = ?",
-            [this.name],
-        );
+        return new Promise((resolve, reject) => {
+            const stmt = format(
+                "DELETE FROM tags WHERE `name` = ?",
+                [this.name],
+            );
+    
+            getDB().query(stmt, err => {
+                if (err) {
+                    reject(err);
 
-        return getDB().query(stmt, err => err);
+                    resolve();
+                }
+            });
+        });
     }
 }
