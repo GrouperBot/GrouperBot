@@ -23,17 +23,25 @@ export default class TagsCommand extends GrouperCommand {
         const tChunks = Chunk(this.client.tags.getNameArray(), 25);
 
         let tEmbed;
-
+        let i = 0;
         for (let outer of tChunks) {
+            i += 1;
             tEmbed = new ResponseBuilder();
 
             tEmbed.setTitle('Available tags');
 
             for (let inner of outer) {
-                tEmbed.addField('`' + inner + '`', '\u200B', true);
+                tEmbed.addField(`\u2022 ${inner}`, '\u200B', true);
             }
 
             embeds.push(tEmbed);
+        }
+
+        // hack for discord alignment
+        i = i % 3;
+        while (i > 0) {
+            tEmbed.addField('\u200B', `\u200B`, true);
+            i -= 1;
         }
 
         new Embeds()
@@ -42,6 +50,7 @@ export default class TagsCommand extends GrouperCommand {
             .showPageIndicator(true)
             .setAuthorizedUsers([grouper.message.author.id])
             .setChannel(grouper.message.channel)
+            .setDescription("Here's a list of all of our tags. Missing one? Request one by doing <TODO>!")
             .build();
     }
 
