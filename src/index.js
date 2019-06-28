@@ -8,6 +8,7 @@ const client = new GrouperClient({
     prefix: process.env.BOT_PREFIX,
     disableEveryone: true,
     developers: process.env.DEVELOPERS,
+    adDuration: process.env.AD_DURATION,
 });
 
 initialize(client, {

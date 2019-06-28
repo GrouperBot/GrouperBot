@@ -10,6 +10,7 @@ export default class GrouperClient extends Client {
      * @typedef {ClientOptions} GrouperClientOptions
      * @property {string} [commandPrefix=";"] Command prefix
      * @property {string} developers List of developer ids separated by comma
+     * @property {number} adDuration - Duration of ads in seconds
      */
 
     /**
@@ -26,6 +27,13 @@ export default class GrouperClient extends Client {
          * @type {string[]}
          */
         this.developers = options.developers ? options.developers.split(',') : [];
+
+        /**
+         * Advertisement duration
+         * 
+         * @type {number}
+         */
+        this.adDuration = parseInt(options.adDuration) || 3600;
 
         /**
          * Client's tag store
@@ -58,6 +66,15 @@ export default class GrouperClient extends Client {
      */
     isDeveloper(id) {
         return this.developers.includes(id);
+    }
+
+    /**
+     * Get the future expiration timestamp
+     * 
+     * @return {number} Expiration time
+     */
+    getExpireTime() {
+        return Math.floor(Date.now() / 1000) + this.adDuration;
     }
 
     hook() {

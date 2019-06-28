@@ -55,6 +55,7 @@ export default class LFGCommand extends GrouperCommand {
                         tags,
                         parseInt(sArgs[2]),
                         grouper.joinArgAfter(3),
+                        this.client.getExpireTime(),
                     ).insert()
                 );
 
