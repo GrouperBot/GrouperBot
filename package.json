@@ -6,7 +6,7 @@
     "scripts": {
         "start": "babel src -d build && node build/index.js",
         "build": "babel src -d build",
-        "clean:linux": "rm -rf `find build -mindepth 1 | grep -v 'gitkeep$'",
+        "clean:linux": "rm -rf `find build -mindepth 1 | grep -v 'gitkeep$'`",
         "clean:win": "attrib +r build/*.gitkeep && del /Q /S build && attrib -r build/*.gitkeep && ROBOCOPY build build /S /MOVE"
     },
     "dependencies": {
