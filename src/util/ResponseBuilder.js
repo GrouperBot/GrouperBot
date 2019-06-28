@@ -53,8 +53,8 @@ export default class ResponseBuilder extends RichEmbed {
     /**
      * Creates a field with a trailing \n for pleasant spacing
      * 
-     * @param {String} name 
-     * @param {String} value 
+     * @param {string} name 
+     * @param {string} value 
      */
     addHelpField(name, value) {
         return this.addField(name, `${value}\n\u200B`, false);
