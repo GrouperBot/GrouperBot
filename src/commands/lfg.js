@@ -152,7 +152,7 @@ export default class LFGCommand extends GrouperCommand {
                     response
                         .setTitle('No results found!')
                         .setDescription(
-                            `Found zero listings with tag(s): ${dTags.join(', ')}\nTry creating a new listing!`
+                            `Found zero listings with tag(s): ${dTags.join(', ')}\n\nTry creating a new listing!\n\u200B`
                         );
 
                     return grouper.dispatch(response);
