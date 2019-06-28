@@ -5,6 +5,8 @@ import Advertisement from '../models/Advertisement.js';
 import { Embeds } from 'discord-paginationembed';
 import to from 'await-to-js';
 import Chunk from '../util/Chunk.js';
+import log from '../log';
+import NoResult from '../errors/NoResult.js';
 
 export default class LFGCommand extends GrouperCommand {
     constructor(client) {
@@ -55,6 +57,7 @@ export default class LFGCommand extends GrouperCommand {
                 }
 
                 let description = grouper.joinArgAfter(3);
+
                 if (description.length > 140) { // TODO: configurable?
                     response
                         .setTitle('Description too long')
@@ -97,7 +100,9 @@ export default class LFGCommand extends GrouperCommand {
                 id = parseInt(id);
 
                 let authorId = grouper.message.author.id;
+
                 let bErr, bAdvertisements;
+
                 [ bErr, bAdvertisements ] = await to(
                     Advertisement.searchById(id, authorId)
                 );
@@ -112,27 +117,19 @@ export default class LFGCommand extends GrouperCommand {
                     return grouper.dispatch(response);
                 }
 
-                if (bAdvertisements.length == 0) {
-                    response
-                        .setTitle('Failed to find advertisment')
-                        .setState(false)
-                        .setDescription(`Failed to retrieve advertisements with the id: ${id}.`
-                        +   `\nPerhaps you mistyped the id value?`);
-
-                    return grouper.dispatch(response);
-                }
-
-                [bErr] = await to(
-                    bAdvertisements[0].remove()
+                [ bErr ] = await to(
+                    bAdvertisements.remove()
                 );
 
                 if (bErr) {
-                    console.log([bErr]);
+                    log.error(bErr);
+
                     response
                         .setTitle('Failed to remove advertisment')
                         .setState(false)
                         .setDescription(`Failed to remove advertisement with the id: ${id}.`
                         +   `\nBelieve this is a bug? Please report it!`);
+                        
                     return grouper.dispatch(response);
                 }
 
@@ -151,7 +148,18 @@ export default class LFGCommand extends GrouperCommand {
                     Advertisement.searchByTags(dTags)
                 );
 
+                if (err instanceof NoResult) {
+                    response
+                        .setTitle('No results found!')
+                        .setDescription(
+                            `Found zero listings with tag(s): ${dTags.join(', ')}\nTry creating a new listing!`
+                        );
+
+                    return grouper.dispatch(response);
+                }
+
                 if (err) {
+
                     response
                         .setTitle('Failed to retrieve advertisements')
                         .setState(false)
@@ -160,16 +168,7 @@ export default class LFGCommand extends GrouperCommand {
                     return grouper.dispatch(response);
                 }
 
-                if (advertisements.length == 0) {
-                    response
-                        .setTitle('No results found!')
-                        .setDescription(`Found zero listings with tag(s): ${dTags.join(', ')}\n`
-                        + `Try creating a new listing!`);
-
-                    return grouper.dispatch(response);
-                }
-
-                let embeds = [], tEmbed, counter = 0;
+                let embeds = [], tEmbed;
 
                 let tChunks = Chunk(advertisements, 5);
 
@@ -182,8 +181,6 @@ export default class LFGCommand extends GrouperCommand {
                         .setDescription("Join up with one of the groups below to find some new friends!");
 
                     for (let inner of outer) {
-                        counter++;
-
                         tEmbed.addField(
                             `\u200B`,
                             `\`\`\`scheme\n`
