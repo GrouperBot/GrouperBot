@@ -60,7 +60,7 @@ export default class HelpCommand extends GrouperCommand {
         response
             .setTitle('You goof')
             .setDescription('You already in help!')
-
+            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/keyboard_2328.png");
         return grouper.dispatch(response);
     }
 }

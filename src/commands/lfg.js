@@ -10,7 +10,7 @@ export default class LFGCommand extends GrouperCommand {
     constructor(client) {
         super(client, {
             name: 'LFG',
-            description: 'Add or return list of advertisements',
+            description: 'Creates a new advertisment or shows a list of advertisements based on tags',
         });
     }
 
@@ -153,8 +153,10 @@ export default class LFGCommand extends GrouperCommand {
 
         response
             .setTitle('Command Usage')
+            .setDescription(`*${this.description}*`)
             .addHelpField('Search by tags', `${this.toString()} \`<tagName>\``)
             .addHelpField('Add Advertisement', `${this.toString()} new \`<tag1,tag2,...>\` \`<teamSize>\` \`<description>\``)
+            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/keyboard_2328.png");
 
         return grouper.dispatch(response);
     }
