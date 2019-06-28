@@ -5,7 +5,7 @@ const log = createLogger({
     format: combine(
         colorize({
             error: 'red',
-            warning: 'yellow',
+            warn: 'yellow',
             info: 'green',
             verbose: 'white',
             debug: 'blue',
@@ -22,7 +22,7 @@ const log = createLogger({
         debug: 0,
         verbose: 1,
         info: 2,
-        warning: 3,
+        warn: 3,
         error: 4,
     },
     transports: [

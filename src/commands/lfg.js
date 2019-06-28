@@ -58,6 +58,7 @@ export default class LFGCommand extends GrouperCommand {
                 [ aErr ] = await to(
                     new Advertisement(
                         grouper.message.author.id,
+                        grouper.message.author.tag,
                         tags,
                         players,
                         grouper.joinArgAfter(3),
@@ -121,7 +122,7 @@ export default class LFGCommand extends GrouperCommand {
 
                         tEmbed.addField(
                             `[${inner.tags.map(t => t.name).join(', ')}] | Players needed: ${inner.players}`,
-                            `\`\`\`${inner.description}\`\`\` Posted by <@${inner.poster}> | ${inner.getTimeLapsed()}`,
+                            `\`\`\`${inner.description}\`\`\` Posted by ${inner.posterTag} | ${inner.getTimeLapsed()}`,
                         );
 
                         if (counter < outer.length)

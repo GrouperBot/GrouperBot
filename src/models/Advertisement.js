@@ -1,18 +1,20 @@
 import Tag from './Tag';
 import { format, MysqlError } from 'mysql';
 import { getDB } from '../database';
+import log from '../log';
 
 export default class Advertisement {
 
     /**
      * 
      * @param {string} poster Snowflake ID of the poster
+     * @param {string} posterTag Name#Descrim of the poster
      * @param {Tag[] | string[]} tags Tag instances to use
      * @param {number} players Mumber of players required/needed
      * @param {string} description Description of advertisement
      * @param {number} expiration Unix timestamp to expire at
      */
-    constructor(poster, tags, players, description, expiration) {
+    constructor(poster, posterTag, tags, players, description, expiration) {
 
         /**
          * The ID of advertisement
@@ -29,6 +31,13 @@ export default class Advertisement {
          * @type {string}
          */
         this.poster = poster;
+
+        /**
+         * The Name#Descrim of the AD poster
+         * 
+         * @type {string}
+         */
+        this.posterTag = posterTag;
 
         /**
          * Instances of tag
@@ -110,12 +119,14 @@ export default class Advertisement {
     async insert() {
         return new Promise((resolve, reject) => {
             const stmt = format(
-                "INSERT INTO advertisements (`poster`, `tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?, ?)",
-                [this.poster, this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
+                "INSERT INTO advertisements (`poster`, `posterTag`, `tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [this.poster, this.posterTag, this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
             );
 
             getDB().query(stmt, err => {
                 if (err) {
+                    log.warn(err);
+
                     reject(err);
                 }
 
@@ -159,6 +170,8 @@ export default class Advertisement {
     
             getDB().query(stmt, (err, results) => {
                 if (err) {
+                    log.warn(err);
+
                     return reject(err);
                 }
     
@@ -170,6 +183,7 @@ export default class Advertisement {
                     results.map(v => {
                         let a = new Advertisement(
                             v.poster,
+                            v.posterTag,
                             v.tags.split(','),
                             v.players,
                             v.description,
