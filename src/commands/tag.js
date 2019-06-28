@@ -1,7 +1,6 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
-import HelpResponseBuilder from '../util/HelpResponseBuilder.js';
 import Tag from '../models/Tag.js';
 
 export default class TagCommand extends GrouperCommand {
@@ -91,12 +90,12 @@ export default class TagCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async help(grouper) {
-        const response = new HelpResponseBuilder();
+        const response = new ResponseBuilder();
 
         response
             .setTitle('Command Usage')
-            .addField('Add a tag', `${this.toString()} \`<tagName>\``)
-            .addField('Remove a tag', `${this.toString()} \`<tagName>\``)
+            .addHelpField('Add a tag', `${this.toString()} \`<tagName>\``)
+            .addHelpField('Remove a tag', `${this.toString()} \`<tagName>\``)
 
         return grouper.dispatch(response);
     }

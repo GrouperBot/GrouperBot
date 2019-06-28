@@ -49,6 +49,17 @@ export default class ResponseBuilder extends RichEmbed {
         this.setColor(this.successful ? this.successColor : this.failColor);
     }
 
+
+    /**
+     * Creates a field with a trailing \n for pleasant spacing
+     * 
+     * @param {String} name 
+     * @param {String} value 
+     */
+    addHelpField(name, value) {
+        return this.addField(name, `${value}\n\u200B`, false);
+    }
+
     /**
      * Set the status of the response
      * 

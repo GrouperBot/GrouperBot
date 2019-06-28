@@ -1,7 +1,6 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
-import HelpResponseBuilder from '../util/HelpResponseBuilder.js';
 
 export default class HelpCommand extends GrouperCommand {
     constructor(client) {
@@ -56,7 +55,7 @@ export default class HelpCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async help(grouper) {
-        const response = new HelpResponseBuilder();
+        const response = new ResponseBuilder();
 
         response
             .setTitle('You goof')

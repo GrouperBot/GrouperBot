@@ -1,7 +1,6 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder';
-import HelpResponseBuilder from '../util/HelpResponseBuilder';
 import { Embeds } from 'discord-paginationembed';
 import Chunk from '../util/Chunk';
 
@@ -61,11 +60,11 @@ export default class TagsCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async help(grouper) {
-        const response = new HelpResponseBuilder();
+        const response = new ResponseBuilder();
 
         response
             .setTitle('Command Usage')
-            .addField('Display tags', this.toString() + '')
+            .addHelpField('Display tags', this.toString() + '')
 
         return grouper.dispatch(response);
     }

@@ -1,7 +1,6 @@
 import GrouperCommand from '../structures/GrouperCommand.js';
 import GrouperMessage from '../structures/GrouperMessage';
 import ResponseBuilder from '../util/ResponseBuilder.js';
-import HelpResponseBuilder from '../util/HelpResponseBuilder.js';
 import Advertisement from '../models/Advertisement.js';
 import { Embeds } from 'discord-paginationembed';
 import to from 'await-to-js';
@@ -150,12 +149,12 @@ export default class LFGCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async help(grouper) {
-        const response = new HelpResponseBuilder();
+        const response = new ResponseBuilder();
 
         response
             .setTitle('Command Usage')
-            .addField('Search by tags', `${this.toString()} \`<tagName>\``)
-            .addField('Add Advertisement', `${this.toString()} new \`<tag1,tag2,...>\` \`<teamSize>\` \`<description>\``)
+            .addHelpField('Search by tags', `${this.toString()} \`<tagName>\``)
+            .addHelpField('Add Advertisement', `${this.toString()} new \`<tag1,tag2,...>\` \`<teamSize>\` \`<description>\``)
 
         return grouper.dispatch(response);
     }
