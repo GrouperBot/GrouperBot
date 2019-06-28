@@ -25,7 +25,7 @@ export default class HelpCommand extends GrouperCommand {
                 .setTitle('Command Help List')
 
             for (const command of this.client.commands.array()) {
-                if (command.dev) {
+                if (command.developerOnly) {
                     continue;
                 }
 

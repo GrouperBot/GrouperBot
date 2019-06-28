@@ -8,6 +8,7 @@ export default class TagCommand extends GrouperCommand {
         super(client, {
             name: 'Tag',
             description: 'Register or remove a tag',
+            developerOnly: true
         });
     }
 
