@@ -91,13 +91,17 @@ export default class TagCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async help(grouper) {
+        if (this.developerOnly)
+            if (!this.client.isDeveloper(grouper.getAuthor().id))
+                return;
+
         const response = new ResponseBuilder();
 
         response
             .setTitle('Command Usage')
             .setDescription(`*${this.description}*`)
-            .addHelpField('Add a tag', `${this.toString()} \`<tagName>\``)
-            .addHelpField('Remove a tag', `${this.toString()} \`<tagName>\``)
+            .addHelpField('Add a tag', `${this.toString()} add \`<tagName>\``)
+            .addHelpField('Remove a tag', `${this.toString()} remove \`<tagName>\``)
             .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/keyboard_2328.png");
 
         return grouper.dispatch(response);
