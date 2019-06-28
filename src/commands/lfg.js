@@ -48,13 +48,18 @@ export default class LFGCommand extends GrouperCommand {
                     }
                 }
 
+                let players = parseInt(sArgs[2]);
+                if (!players) {
+                    return this.dispatchUsage(grouper);
+                }
+
                 let aErr;
 
                 [ aErr ] = await to(
                     new Advertisement(
                         grouper.message.author.id,
                         tags,
-                        parseInt(sArgs[2]),
+                        players,
                         grouper.joinArgAfter(3),
                         this.client.getExpireTime(),
                     ).insert()
