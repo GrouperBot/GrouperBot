@@ -111,8 +111,9 @@ export default class LFGCommand extends GrouperCommand {
 
                 if (advertisements.length == 0) {
                     response
-                        .setTitle('No results')
-                        .setDescription(`Found zero listing with tag(s): ${dTags.join(', ')}`)
+                        .setTitle('No results found!')
+                        .setDescription(`Found zero listings with tag(s): ${dTags.join(', ')}\n`
+                        + `Try creating a new listing!`);
 
                     return grouper.dispatch(response);
                 }
@@ -140,9 +141,6 @@ export default class LFGCommand extends GrouperCommand {
                             + `[+] Description: ${inner.description}\n`
                             + `\`\`\` *Posted by ${inner.posterTag} ${inner.getTimeLapsed()}* | ID #${inner.id}`,
                         );
-
-                        /*if (counter < outer.length)
-                            tEmbed.addBlankField();*/
                     }
 
                     embeds.push(tEmbed);
