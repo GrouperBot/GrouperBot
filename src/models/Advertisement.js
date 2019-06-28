@@ -1,5 +1,6 @@
 import Tag from './Tag';
 import { format, MysqlError } from 'mysql';
+import NoResult from '../errors/NoResult';
 import { getDB } from '../database';
 import log from '../log';
 
@@ -136,11 +137,78 @@ export default class Advertisement {
     }
 
     /**
+     * Removes an advertisement by its ID
+     * 
+     * @return {Promise<MysqlError|null>}
+     */
+    async remove() {
+        return new Promise((resolve, reject) => {
+            const sStmt = "DELETE FROM advertisements WHERE `id` = ?";
+
+            const stmt = format(sStmt, this.id);
+
+            getDB().query(stmt, err => {
+                if (err) {
+                    log.warn(err);
+
+                    reject(err);
+                }
+
+                resolve();
+            })
+        });
+    }
+
+    /**
+     * Search advertisement by id
+     * 
+     * @param {Number} id 
+     * @param {string} poster
+     * 
+     * @return {Promise<Advertisement|(NoResult|MysqlError)>}
+     */
+    static async searchById(id, poster) {
+        return new Promise((resolve, reject) => {
+    
+            let sStmt = `SELECT * FROM advertisements WHERE \`id\`='${id}' AND \`expiration\` > UNIX_TIMESTAMP() AND \`poster\`=${poster};`;
+
+            getDB().query(sStmt, (err, result) => {
+                if (err) {
+                    log.warn(err);
+
+                    return reject(err);
+                }
+    
+                if (result.length == 0) {
+                    return reject(new NoResult('No advertisement found'));
+                }
+
+                // There should only be one result for ID search
+                result = result[0];
+
+                let a = new Advertisement(
+                    result.poster,
+                    result.posterTag,
+                    result.tags.split(','),
+                    result.players,
+                    result.description,
+                    result.expiration,
+                )
+
+                a.setID(result.id);
+                a.setCreatedAt(result.created_at);
+
+                resolve(a);
+            })
+        })
+    }
+
+    /**
      * Search advertisement by tag(s)
      * 
      * @param {Tags[] | string[]} tags 
      * 
-     * @return {Promise<Advertisement[]>}
+     * @return {Promise.<Advertisement[]|(NoResult|MysqlError)>}
      */
     static searchByTags(tags) {
         return new Promise((resolve, reject) => {
@@ -176,7 +244,7 @@ export default class Advertisement {
                 }
     
                 if (results.length == 0) {
-                    return resolve([]);
+                    return reject(new NoResult('No advertisement found'));
                 }
     
                 resolve(
