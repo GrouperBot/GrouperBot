@@ -151,8 +151,8 @@ export default class LFGCommand extends GrouperCommand {
 
         response
             .setTitle('Command Usage')
-            .addField('Search by tags', `${this.toString()} \`tagName\``)
-            .addField('Add Advertisement', `${this.toString()} new \`tag1,tag2\` \`teamSize\` \`description\``)
+            .addField('Search by tags', `${this.toString()} \`<tagName>\``)
+            .addField('Add Advertisement', `${this.toString()} new \`<tag1,tag2,...>\` \`<teamSize>\` \`<description>\``)
 
         return grouper.dispatch(response);
     }
