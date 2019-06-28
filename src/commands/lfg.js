@@ -100,20 +100,27 @@ export default class LFGCommand extends GrouperCommand {
                     return grouper.dispatch(response);
                 }
 
-                let embeds = [], tEmbed;
+                let embeds = [], tEmbed, counter = 0;
 
                 let tChunks = Chunk(advertisements, 5);
 
                 for (let outer of tChunks) {
                     tEmbed = new ResponseBuilder();
 
-                    tEmbed.setTitle(`Advertisements | Tags: [${dTags.join(', ')}]`);
+                    tEmbed
+                        .setTitle(`Advertisements | Tags: [${dTags.join(', ')}]`)
+                        .setDescription('\u200B');
 
                     for (let inner of outer) {
+                        counter++;
+
                         tEmbed.addField(
-                            `Players needed ${inner.players} | Tags: [${inner.tags.map(t => t.name).join(', ')}]`,
-                            inner.description + ` | Posted by <@${inner.poster}>`,
+                            `[${inner.tags.map(t => t.name).join(', ')}] | Players needed: ${inner.players}`,
+                            `\`\`\`${inner.description}\`\`\` Posted by <@${inner.poster}> | ${inner.getTimeLapsed()}`,
                         );
+
+                        if (counter < outer.length)
+                            tEmbed.addBlankField();
                     }
 
                     embeds.push(tEmbed);
@@ -121,6 +128,7 @@ export default class LFGCommand extends GrouperCommand {
 
                 new Embeds()
                     .setArray(embeds)
+                    .setTimeout(30 * 1000)
                     .showPageIndicator(true)
                     .setAuthorizedUsers([grouper.message.author.id])
                     .setChannel(grouper.message.channel)

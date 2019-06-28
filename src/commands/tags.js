@@ -38,6 +38,7 @@ export default class TagsCommand extends GrouperCommand {
 
         new Embeds()
             .setArray(embeds)
+            .setTimeout(30 * 1000)
             .showPageIndicator(true)
             .setAuthorizedUsers([grouper.message.author.id])
             .setChannel(grouper.message.channel)

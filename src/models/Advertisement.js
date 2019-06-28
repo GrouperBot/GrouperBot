@@ -91,6 +91,17 @@ export default class Advertisement {
     }
 
     /**
+     * Get number of minutes lapsed
+     * 
+     * @return {string}
+     */
+    getTimeLapsed() {
+        const diff = Math.round((Math.floor(Date.now() / 1000) - this.created_at) / 60);
+
+        return `${diff} minutes ago`;
+    }
+
+    /**
      * Inserts a new advertisement into database
      * 
      * @async
