@@ -135,6 +135,67 @@ export default class Advertisement {
         });
     }
 
+    async remove() {
+        return new Promise((resolve, reject) => {
+            const stmt = `DELETE FROM advertisements WHERE 'id' = '${this.id}'`;
+
+            getDB().query(stmt, err => {
+                if (err) {
+                    log.warn(err);
+
+                    reject(err);
+                }
+
+                resolve();
+            })
+        });
+    }
+
+    /**
+     * Search advertisements by id
+     * 
+     * @param {Number} id 
+     * @param {string} poster
+     * 
+     * @return {Promise<Advertisement[]>}
+     */
+    static async searchById(id, poster) {
+        return new Promise((resolve, reject) => {
+    
+            let sStmt = `SELECT * FROM advertisements WHERE \`id\`='${id}' AND \`expiration\` > UNIX_TIMESTAMP() AND \`poster\`=${poster};`;
+
+            getDB().query(sStmt, (err, results) => {
+                if (err) {
+                    log.warn(err);
+
+                    return reject(err);
+                }
+    
+                if (results.length == 0) {
+                    return resolve([]);
+                }
+    
+                resolve(
+                    results.map(v => {
+                        let a = new Advertisement(
+                            v.poster,
+                            v.posterTag,
+                            v.tags.split(','),
+                            v.players,
+                            v.description,
+                            v.expiration,
+                        );
+        
+                        a.setID(v.id);
+                        a.setCreatedAt(v.created_at);
+        
+                        return a;
+                    })
+                );
+            })
+        })
+    }
+
     /**
      * Search advertisement by tag(s)
      * 

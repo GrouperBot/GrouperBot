@@ -91,6 +91,57 @@ export default class LFGCommand extends GrouperCommand {
                     .setDescription('You have successfully posted an advertisement')
                 
                 return grouper.dispatch(response);
+            case 'remove':
+                let id = sArgs[1];
+                id.replace('#', ''); // strip # if they supplied it
+                id = parseInt(id);
+
+                let authorId = grouper.message.author.id;
+                let bErr, bAdvertisements;
+                [ bErr, bAdvertisements ] = await to(
+                    Advertisement.searchById(id, authorId)
+                );
+
+                if (bErr) {
+                    response
+                        .setTitle('Failed to find advertisment')
+                        .setState(false)
+                        .setDescription(`SQL Error: Failed to retrieve advertisements with the id: ${id}.`
+                        +   `\nPerhaps you mistyped the id value?`);
+                    
+                    return grouper.dispatch(response);
+                }
+
+                if (bAdvertisements.length == 0) {
+                    response
+                        .setTitle('Failed to find advertisment')
+                        .setState(false)
+                        .setDescription(`Failed to retrieve advertisements with the id: ${id}.`
+                        +   `\nPerhaps you mistyped the id value?`);
+
+                    return grouper.dispatch(response);
+                }
+
+                [bErr] = await to(
+                    bAdvertisements[0].remove()
+                );
+
+                if (bErr) {
+                    console.log([bErr]);
+                    response
+                        .setTitle('Failed to remove advertisment')
+                        .setState(false)
+                        .setDescription(`Failed to remove advertisement with the id: ${id}.`
+                        +   `\nBelieve this is a bug? Please report it!`);
+                    return grouper.dispatch(response);
+                }
+
+                response
+                    .setTitle('Advertisment removed!')
+                    .setDescription(`Your advertisment with the ID of # ${id} has been successfully removed!`)
+
+                return grouper.dispatch(response);
+
             default:
                 const dTags = sArgs[0].split(',');
 
