@@ -94,8 +94,8 @@ export default class TagCommand extends GrouperCommand {
 
         response
             .setTitle('Command Usage')
-            .addField('Add a tag', `${this.toString()} \`<tagName>\``)
-            .addField('Remove a tag', `${this.toString()} \`<tagName>\``)
+            .addField('Add a tag', `${this.toString()} \`<tagName>\`\n\u200B`)
+            .addField('Remove a tag', `${this.toString()} \`<tagName>\`\n\u200B`)
 
         return grouper.dispatch(response);
     }

@@ -64,7 +64,7 @@ export default class TagsCommand extends GrouperCommand {
 
         response
             .setTitle('Command Usage')
-            .addField('Display tags', this.toString())
+            .addField('Display tags', this.toString() + '\n\u200B')
 
         return grouper.dispatch(response);
     }
