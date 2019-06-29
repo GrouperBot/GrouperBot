@@ -50,7 +50,7 @@ export default class TagsCommand extends GrouperCommand {
             .showPageIndicator(true)
             .setAuthorizedUsers([grouper.message.author.id])
             .setChannel(grouper.message.channel)
-            .setDescription("Here's a list of all of our tags. Missing one? Request one by doing <TODO>!")
+            .setDescription("Here's a list of all of our tags.")
             .build();
     }
 
