@@ -70,8 +70,8 @@ export default class ResponseBuilder extends RichEmbed {
 
         this.setColor(this.successful ? this.successColor : this.failColor);
 
-        if (!this.successColor)
-            this.setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/cross-mark_274c.png');
+        if (!this.successful)
+            this.setThumbnail('https://i.imgur.com/FQhs8IT.png');
             
         return this;
     }
