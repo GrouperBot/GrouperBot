@@ -29,7 +29,7 @@ Or if you'd like to join a group, just seach for overwatch groups and find frien
 
 ## 🛠 Installation
 - Clone this repository via `git clone git@github.com:dhw19/LFG-Bot.git` and navigate to it
-- Run `npm` or `yarn` (Yarn users)
+- Run `npm install` or `yarn` (Yarn users)
 - Configure `.env.example` and rename to `.env`
 - Run `npm start` or `yarn start`
 - 🎉
