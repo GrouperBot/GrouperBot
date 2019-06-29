@@ -1,13 +1,10 @@
-#bot settings
-settings.json
-
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+package-lock.json
 # Runtime data
 pids
 *.pid
@@ -62,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+
+# Storage
+storage/*
+
+# Babel Build
+build/*
+!build/.gitkeep
