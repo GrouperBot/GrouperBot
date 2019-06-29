@@ -8,11 +8,12 @@ import Chunk from '../util/Chunk.js';
 import log from '../log';
 import NoResult from '../errors/NoResult.js';
 
-export default class LFGCommand extends GrouperCommand {
+export default class GroupCommand extends GrouperCommand {
     constructor(client) {
         super(client, {
-            name: 'LFG',
+            name: 'group',
             description: 'Creates a new advertisment or shows a list of advertisements based on tags',
+            aliases: ['groups'],
         });
     }
 
