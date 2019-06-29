@@ -71,7 +71,7 @@ export default class ResponseBuilder extends RichEmbed {
         this.setColor(this.successful ? this.successColor : this.failColor);
 
         if (!this.successful)
-            this.setThumbnail('https://i.imgur.com/FQhs8IT.png');
+            this.setThumbnail('https://i.imgur.com/Lqnb8NT.png');
             
         return this;
     }

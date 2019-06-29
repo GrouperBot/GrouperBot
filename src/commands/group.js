@@ -112,8 +112,9 @@ export default class GroupCommand extends GrouperCommand {
                     response
                         .setTitle('Failed to find advertisment')
                         .setState(false)
-                        .setDescription(`SQL Error: Failed to retrieve advertisements with the id: ${id}.`
-                        +   `\nPerhaps you mistyped the id value?`);
+                        .setDescription(
+                            `SQL Error: Failed to retrieve advertisements with the id: ${id}.\n\nPerhaps you mistyped the id value?\n\u200B`
+                        );
                     
                     return grouper.dispatch(response);
                 }
