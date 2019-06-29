@@ -12,7 +12,7 @@ export default class ResponseBuilder extends RichEmbed {
      * @typedef {MessageEmbed} BuilderOptions
      * @property {boolean} [successful=true]
      * @property {ColorResolvable} [successColor=00FFFF]
-     * @property {ColorResolvable} [failColor=DD2C00]
+     * @property {ColorResolvable} [failColor=FF737D]
      */
 
 
@@ -43,7 +43,7 @@ export default class ResponseBuilder extends RichEmbed {
          * 
          * @type {ColorResolvable}
          */
-        this.failColor = options.failColor || "#DD2C00";
+        this.failColor = options.failColor || "#FF737D";
 
         // setColor passes through color resolver
         this.setColor(this.successful ? this.successColor : this.failColor);
