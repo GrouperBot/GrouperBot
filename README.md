@@ -12,7 +12,7 @@ Don't forget to prepend the prefix infront!
 
 If you and a buddy wanted 3 more players to join you in some Overwatch quickplay games, you could write:
 
-`;group new overwatch 3 Looking for 3 more players to join us in some quickplay matches! Add me as a friend and lets play!`
+`?group new overwatch 3 Looking for 3 more players to join us in some quickplay matches! Add me as a friend and lets play!`
 
 The advertisment will appear like so:
 
@@ -20,7 +20,7 @@ The advertisment will appear like so:
 
 Or if you'd like to join a group, just seach for overwatch groups and find friends!
 
-`;groups overwatch`
+`?groups overwatch`
 
 ## 🔰 Prerequisites
 - NodeJS >= 10.16.0
