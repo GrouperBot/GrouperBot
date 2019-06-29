@@ -66,7 +66,7 @@ export default class TagsCommand extends GrouperCommand {
             .setTitle('Command Usage')
             .setDescription(`*${this.description}*`)
             .addHelpField('Display tags', this.toString() + '')
-            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/keyboard_2328.png");
+            .isUsage()
 
         return grouper.dispatch(response);
     }

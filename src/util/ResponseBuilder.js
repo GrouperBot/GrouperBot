@@ -75,4 +75,11 @@ export default class ResponseBuilder extends RichEmbed {
             
         return this;
     }
+
+    /**
+     * Sets the thumbnail for usage commands
+     */
+    isUsage() {
+        return this.setThumbnail('https://i.imgur.com/yXeRZXs.png');
+    }
 }

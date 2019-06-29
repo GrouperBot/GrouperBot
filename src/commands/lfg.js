@@ -177,7 +177,7 @@ export default class LFGCommand extends GrouperCommand {
 
                     tEmbed
                         .setTitle(`Join a group! | Searching for: ${dTags.join(', ')}`)
-                        .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/clipboard_1f4cb.png")
+                        .setThumbnail("https://i.imgur.com/ILNQjNV.png")
                         .setDescription("Join up with one of the groups below to find some new friends!");
 
                     for (let inner of outer) {
@@ -217,7 +217,7 @@ export default class LFGCommand extends GrouperCommand {
             .setDescription(`*${this.description}*`)
             .addHelpField('Search by tags', `${this.toString()} \`<tagName>\``)
             .addHelpField('Add Advertisement', `${this.toString()} new \`<tag1,tag2,...>\` \`<teamSize>\` \`<description>\``)
-            .setThumbnail("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/146/keyboard_2328.png");
+            .isUsage()
 
         return grouper.dispatch(response);
     }
