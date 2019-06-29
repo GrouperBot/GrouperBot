@@ -163,16 +163,17 @@ export default class Advertisement {
      * Search advertisement by id
      * 
      * @param {Number} id 
-     * @param {string} poster
      * 
      * @return {Promise<Advertisement|(NoResult|MysqlError)>}
      */
-    static async searchById(id, poster) {
+    static async searchById(id) {
         return new Promise((resolve, reject) => {
     
-            let sStmt = `SELECT * FROM advertisements WHERE \`id\`='${id}' AND \`expiration\` > UNIX_TIMESTAMP() AND \`poster\`=${poster};`;
+            const sStmt = `SELECT * FROM advertisements WHERE \`id\`='${id}' AND \`expiration\` > UNIX_TIMESTAMP();`;
 
-            getDB().query(sStmt, (err, result) => {
+            const stmt = format(sStmt, sStmt);
+
+            getDB().query(stmt, (err, result) => {
                 if (err) {
                     log.warn(err);
 

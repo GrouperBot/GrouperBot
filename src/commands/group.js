@@ -102,10 +102,10 @@ export default class GroupCommand extends GrouperCommand {
 
                 let authorId = grouper.message.author.id;
 
-                let bErr, bAdvertisements;
+                let bErr, bAdvertisement;
 
-                [ bErr, bAdvertisements ] = await to(
-                    Advertisement.searchById(id, authorId)
+                [ bErr, bAdvertisement ] = await to(
+                    Advertisement.searchById(id)
                 );
 
                 if (bErr) {
@@ -118,8 +118,20 @@ export default class GroupCommand extends GrouperCommand {
                     return grouper.dispatch(response);
                 }
 
+                if (![
+                    grouper.message.author.id,
+                    ...this.client.developers,
+                ].includes(bAdvertisement.poster)) {
+                    response
+                        .setTitle('Failed to remove advertisement')
+                        .setState(false)
+                        .setDescription('Hey, you are not the poster!')
+
+                    return grouper.dispatch(response);
+                }
+
                 [ bErr ] = await to(
-                    bAdvertisements.remove()
+                    bAdvertisement.remove()
                 );
 
                 if (bErr) {
