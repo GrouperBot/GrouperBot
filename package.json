@@ -1,6 +1,6 @@
 {
     "name": "grouper-bot",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "A discord bot whose focus is centered around the idea that no gamer should play alone. In the world of discord, with hundreds of thousands of users to play with, there's just no reason for it.",
     "repository": "https://github.com/GrouperBot/GrouperBot.git",
     "scripts": {
