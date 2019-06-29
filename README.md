@@ -34,6 +34,14 @@ Or if you'd like to join a group, just seach for overwatch groups and find frien
 - Run `npm start` or `yarn start`
 - 🎉
 
+## Developers
+- Fishy!#6593 (smells like ...you know)
+- Headline#9999 (can't change light bulbs unsupervised)
+- SlidyBat#4897 (known for saying bro too often)
+- Yofou#0420 (your local scottish python wizard)
+
 ## License
 
 Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+
+
