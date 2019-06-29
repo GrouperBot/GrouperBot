@@ -197,9 +197,9 @@ export default class GroupCommand extends GrouperCommand {
                         tEmbed.addField(
                             `\u200B`,
                             `\`\`\`scheme\n`
-                            + `[+] Tags: ${inner.tags.map(t => t.name).join(', ')}\n`
-                            + `[+] Players needed: ${inner.players}\n`
-                            + `[+] Description: ${inner.description}\n`
+                            + `🔖 Tags: ${inner.tags.map(t => t.name).join(', ')}\n`
+                            + `👪 Players needed: ${inner.players}\n`
+                            + `📝 Description: ${inner.description}\n`
                             + `\`\`\` *Posted by ${inner.posterTag} ${inner.getTimeLapsed()}* | ID #${inner.id}`,
                         );
                     }
