@@ -96,7 +96,7 @@ export default class LFGCommand extends GrouperCommand {
                 return grouper.dispatch(response);
             case 'remove':
                 let id = sArgs[1];
-                id.replace('#', ''); // strip # if they supplied it
+                id = id.replace('#', ''); // strip # if they supplied it
                 id = parseInt(id);
 
                 let authorId = grouper.message.author.id;
