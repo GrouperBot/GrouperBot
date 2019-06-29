@@ -8,7 +8,7 @@ export default class GrouperClient extends Client {
 
     /**
      * @typedef {ClientOptions} GrouperClientOptions
-     * @property {string} [commandPrefix=";"] Command prefix
+     * @property {string} [commandPrefix="?"] Command prefix
      * @property {string} developers List of developer ids separated by comma
      * @property {number} adDuration - Duration of ads in seconds
      */
@@ -55,7 +55,7 @@ export default class GrouperClient extends Client {
          * @type {GrouperCommandRouter}
          */
         this.router = new GrouperCommandRouter(this, {
-            prefix: options.prefix || ';',
+            prefix: options.prefix || '?',
         });
     }
 
