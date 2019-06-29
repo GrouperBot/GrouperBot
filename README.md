@@ -3,18 +3,6 @@ A discord bot whose focus is centered around the idea that no gamer should play 
 
 This bot was created to solve that issue by connecting gamers to each other and to encourage people to make new friends on Discord! We believe this is in the spirit of why Discord was created and would like to help make that process easier!
 
-## 🔰 Prerequisites
-- NodeJS >= 10.16.0
-- MySQL Server
-- Discord Bot (Duh)
-
-## 🛠 Installation
-- Clone this repository via `git clone git@github.com:dhw19/LFG-Bot.git` and navigate to it
-- Run `npm` or `yarn` (Yarn users)
-- Configure `.env.example` and rename to `.env`
-- Run `npm start` or `yarn start`
-- 🎉
-
 ## 📣 Usage
 Don't forget to prepend the prefix infront!
 - `help` - A tidy help menu which displays all available commands.
@@ -33,6 +21,18 @@ The advertisment will appear like so:
 Or if you'd like to join a group, just seach for overwatch groups and find friends!
 
 `;groups overwatch`
+
+## 🔰 Prerequisites
+- NodeJS >= 10.16.0
+- MySQL Server
+- Discord Bot Token (yeah, duh..)
+
+## 🛠 Installation
+- Clone this repository via `git clone git@github.com:dhw19/LFG-Bot.git` and navigate to it
+- Run `npm` or `yarn` (Yarn users)
+- Configure `.env.example` and rename to `.env`
+- Run `npm start` or `yarn start`
+- 🎉
 
 ## License
 
