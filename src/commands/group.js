@@ -196,7 +196,7 @@ export default class GroupCommand extends GrouperCommand {
                     for (let inner of outer) {
                         tEmbed.addField(
                             `\u200B`,
-                            `\`\`\`scheme\n`
+                            `\`\`\`\n`
                             + `🔖 Tags: ${inner.tags.map(t => t.name).join(', ')}\n`
                             + `👪 Players needed: ${inner.players}\n`
                             + `📝 Description: ${inner.description}\n`
