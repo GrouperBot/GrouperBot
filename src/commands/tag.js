@@ -23,12 +23,7 @@ export default class TagCommand extends GrouperCommand {
         const response = new ResponseBuilder();
 
         if (sArgs.length < 2) {
-            response
-                .setTitle('Invalid syntax')
-                .setState(false)
-                .setDescription('You botched it') // TODO: may need alternative wording
-
-            return grouper.dispatch(response);
+            return this.help(grouper);
         }
 
         const nTag = new Tag(sArgs[1]);

@@ -39,6 +39,10 @@ export default class CommandStore extends Collection {
             throw new Error(`Command name "${command.name}" is already registered`);
         }
 
+        if (this.some(cmd => cmd.aliases.filter(n => command.aliases.indexOf(n) > -1).length > 0)) {
+            throw new Error(`Command "${command.name}" contains colliding alias(es)`);
+        }
+
         this.set(command.name.toLowerCase(), command);
 
         /**

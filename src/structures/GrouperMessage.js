@@ -55,7 +55,13 @@ export default class GrouperMessage {
      * @return {string}
      */
     getArgString() {
-        return this.message.content.match(ArgRegex).slice(1).join(' ');
+        const rMatch = this.message.content.match(ArgRegex);
+
+        if (rMatch == null) {
+            return '';
+        }
+
+        return rMatch.slice(1).join(' ');
     }
 
     /**

@@ -7,6 +7,7 @@ export default class GrouperCommand {
      * @typedef {Object} CommandInfo
      * @property {string} name - Name of the command
      * @property {string} description - Description of the command
+     * @property {string[]} aliases - Aliases of the command
      * @property {boolean} [developerOnly = false] - Allow only developer use this command
      */
 
@@ -37,7 +38,14 @@ export default class GrouperCommand {
          * 
          * @type {string}
          */
-        this.description = info.description;
+        this.description = info.description || '';
+
+        /**
+         * Aliases of the command
+         * 
+         * @type {string}
+         */
+        this.aliases = Array.isArray(info.aliases) ? info.aliases : [];
 
 
         /**

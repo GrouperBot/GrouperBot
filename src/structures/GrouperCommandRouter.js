@@ -44,9 +44,13 @@ export default class GrouperCommandRouter {
         }
 
         // Remove the prefix and split it into array, and match first item
-        const sCommand = message.content.substr(this.prefix.length).match(ArgRegex)[0];
+        const sCommand = message.content.substr(this.prefix.length).match(ArgRegex);
 
-        const fCommand = this.client.commands.find(f => f.name === sCommand);
+        if (sCommand == null) {
+            return;
+        }
+
+        const fCommand = this.client.commands.find(f => f.name === sCommand[0] || (Array.isArray(f.aliases) && f.aliases.includes(sCommand[0])));
 
         if (fCommand === null) {
             return;
