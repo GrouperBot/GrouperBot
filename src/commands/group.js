@@ -125,7 +125,7 @@ export default class GroupCommand extends GrouperCommand {
                     response
                         .setTitle('Failed to remove advertisement')
                         .setState(false)
-                        .setDescription('Hey, you are not the poster!')
+                        .setDescription('Hey, you\'re not the poster!')
 
                     return grouper.dispatch(response);
                 }
