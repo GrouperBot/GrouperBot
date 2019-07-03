@@ -18,12 +18,20 @@ export default class TagsCommand extends GrouperCommand {
      * @param {GrouperMessage} grouper
      */
     async run(grouper) {
-        let embeds = [];
+        if (this.client.tags.size == 0) {
+            const response = new ResponseBuilder();
+
+                response
+                    .setTitle('No tags available!')
+                    .setDescription('Start by setting up some tags!');
+
+            return grouper.dispatch(response);
+        }
 
         const tChunks = Chunk(this.client.tags.getNameArray(), 25);
 
-        let tEmbed;
-        let i = 0;
+        let embeds = [], tEmbed, i = 0;
+
         for (let outer of tChunks) {
             i += 1;
             tEmbed = new ResponseBuilder();
