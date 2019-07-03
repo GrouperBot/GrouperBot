@@ -3,6 +3,10 @@ A discord bot whose focus is centered around the idea that no gamer should play 
 
 This bot was created to solve that issue by connecting gamers to each other and to encourage people to make new friends on Discord! We believe this is in the spirit of why Discord was created and would like to help make that process easier!
 
+## 🔗 Links
+[Invite Me!](https://discordapp.com/oauth2/authorize?client_id=594396805266145292&scope=bot&permissions=8) Be sure to read the instructions below!
+
+Any issues, questions, or funny jokes? Come chat with us in our [support server](https://discord.gg/dF9xrAW)!
 ## 📣 Usage
 Don't forget to prepend the prefix infront!
 - `help` - A tidy help menu which displays all available commands.
