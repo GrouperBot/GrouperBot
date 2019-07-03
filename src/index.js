@@ -32,6 +32,9 @@ client
     .on('ready', () => {
         log.info('Client#ready');
     })
+    .on('databaseRetry', () => {
+        log.warn('Client#databaseRetry');
+    })
     .on('databaseInitialized', () => {
         log.info('Client#databaseInitialized');
 

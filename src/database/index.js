@@ -15,7 +15,7 @@ let database = null;
  * @param {GrouperClient} client Grouper client
  * @param {ConnectionConfig} config Connection configuration
  */
-export function initialize(client, config) {
+export function initialize(client, config, retry = false) {
     database = createConnection(config);
 
     // Should we be attempting to create database here?
@@ -23,13 +23,32 @@ export function initialize(client, config) {
     database.query(CreateAdvertisementTable);
 
     database.on('connect', () => {
+        if (!retry) {
+            /**
+             * Emitted when the database is first initialized
+             * 
+             * @event GrouperClient#databaseInitialized
+             */
+            client.emit('databaseInitialized');
+        }
+    });
+    database.on('error', (err) => {
+        if (!err.fatal)
+            return;
+
         /**
-         * Emitted when the database is initialized
+         * Emitted when the database connection dropped and is retrying
          * 
-         * @event GrouperClient#databaseInitialized
+         * @event GrouperClient#databaseRetry
          */
-        client.emit('databaseInitialized');
-    })
+        client.emit('databaseRetry');
+
+        // We'll create a delay here that way we're not spamming reconnection attempts
+        setTimeout(() => {
+            initialize(client, config, true);
+        }, 1000); // milliseconds
+    });
+
 }
 
 /**
