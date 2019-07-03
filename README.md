@@ -32,7 +32,7 @@ Or if you'd like to join a group, just seach for overwatch groups and find frien
 - Discord Bot Token (yeah, duh..)
 
 ## 🛠 Installation
-- Clone this repository via `git clone git@github.com:dhw19/LFG-Bot.git` and navigate to it
+- Clone this repository via `git clone git@github.com:GrouperBot/GrouperBot.git` and navigate to it
 - Run `npm install` or `yarn` (Yarn users)
 - Configure `.env.example` and rename to `.env`
 - Run `npm start` or `yarn start`
