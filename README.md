@@ -18,7 +18,7 @@ If you and a buddy wanted 3 more players to join you in some Overwatch quickplay
 
 `?group new overwatch 3 Looking for 3 more players to join us in some quickplay matches! Add me as a friend and lets play!`
 
-The advertisment will appear like so:
+The advertisement will appear like so:
 
 ![](http://i2.michaelwflaherty.com/tVmOP5UHLj.png)
 
@@ -47,5 +47,3 @@ Or if you'd like to join a group, just seach for overwatch groups and find frien
 ## ⚖️ License
 
 Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
-
-
