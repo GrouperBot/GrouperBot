@@ -12,7 +12,7 @@ export default class GroupCommand extends GrouperCommand {
     constructor(client) {
         super(client, {
             name: 'group',
-            description: 'Creates a new advertisment or shows a list of advertisements based on tags',
+            description: 'Creates a new advertisement or shows a list of advertisements based on tags',
             aliases: ['groups'],
         });
     }
@@ -110,7 +110,7 @@ export default class GroupCommand extends GrouperCommand {
 
                 if (bErr) {
                     response
-                        .setTitle('Failed to find advertisment')
+                        .setTitle('Failed to find advertisement')
                         .setState(false)
                         .setDescription(
                             `SQL Error: Failed to retrieve advertisements with the id: ${id}.\n\nPerhaps you mistyped the id value?\n\u200B`
@@ -139,7 +139,7 @@ export default class GroupCommand extends GrouperCommand {
                     log.error(bErr);
 
                     response
-                        .setTitle('Failed to remove advertisment')
+                        .setTitle('Failed to remove advertisement')
                         .setState(false)
                         .setDescription(`Failed to remove advertisement with the id: ${id}.`
                         +   `\nBelieve this is a bug? Please report it!`);
@@ -148,8 +148,8 @@ export default class GroupCommand extends GrouperCommand {
                 }
 
                 response
-                    .setTitle('Advertisment removed!')
-                    .setDescription(`Your advertisment with the ID of # ${id} has been successfully removed!`)
+                    .setTitle('Advertiesment removed!')
+                    .setDescription(`Your advertisement with the ID of # ${id} has been successfully removed!`)
 
                 return grouper.dispatch(response);
 
