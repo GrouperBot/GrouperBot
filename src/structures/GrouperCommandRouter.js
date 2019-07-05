@@ -63,8 +63,10 @@ export default class GrouperCommandRouter {
         const m = new GrouperMessage(message);
 
         const notification = this.client.notifications.get('cmd');
-        const embed = notification.buildEmbed(message);
-        notification.dispatch(embed);
+        if (notification) {
+            const embed = notification.buildEmbed(message);
+            notification.dispatch(embed);    
+        }
 
         m.setCommand(fCommand);
 

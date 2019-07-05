@@ -126,11 +126,17 @@ export default class GrouperClient extends Client {
 
         this.on('guildCreate', (g) => {
             const notification = this.notifications.get('join');
+            if (!notification)
+                return;
+
             const embed = notification.buildEmbed(g);
             notification.dispatch(embed);
         });
         this.on('guildDelete', (g) => {
             const notification = this.notifications.get('leave');
+            if (!notification)
+                return;
+
             const embed = notification.buildEmbed(g);
             notification.dispatch(embed);
         });
