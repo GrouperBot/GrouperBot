@@ -58,7 +58,8 @@ export default class TagsCommand extends GrouperCommand {
             .showPageIndicator(true)
             .setAuthorizedUsers([grouper.message.author.id])
             .setChannel(grouper.message.channel)
-            .setDescription("Here's a list of all of our tags.")
+            .setDescription("Here's a list of all of our tags.\n\n"
+            + `Missing some? Join our [support discord](https://discordapp.com/invite/${process.env.SUPPORT_INVITE}) to request more!`)
             .build()
             .catch((e) => {
                 const response = new ResponseBuilder()

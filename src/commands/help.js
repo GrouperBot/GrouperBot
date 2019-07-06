@@ -23,6 +23,8 @@ export default class HelpCommand extends GrouperCommand {
         if (sArgs.length == 0) {
             response
                 .setTitle('Command Help List')
+                .setDescription(`For help on specific commands, type ${this.client.options.prefix}help <command>\n\n`
+                + `For futher support or questions, join our [support discord](https://discordapp.com/invite/${process.env.SUPPORT_INVITE})`);
 
             for (const command of this.client.commands.array()) {
                 if (command.developerOnly) {
