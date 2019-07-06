@@ -1,8 +1,14 @@
-import { Client, ClientOptions } from 'discord.js';
+import { Client, ClientOptions, Snowflake } from 'discord.js';
 import LoadTags from '../util/LoadTags';
 import TagStore from '../stores/TagStore';
 import CommandStore from '../stores/CommandStore';
 import GrouperCommandRouter from './GrouperCommandRouter';
+
+// Notifications
+import CommandNotification from '../notifications/CommandNotification';
+import GrouperNotificationManager from './GrouperNotificationManager';
+import GuildJoinNotification from '../notifications/GuildJoinNotification';
+import GuildLeaveNotification from '../notifications/GuildLeaveNotification';
 
 export default class GrouperClient extends Client {
 
@@ -11,6 +17,7 @@ export default class GrouperClient extends Client {
      * @property {string} [commandPrefix="?"] Command prefix
      * @property {string} developers List of developer ids separated by comma
      * @property {number} adDuration - Duration of ads in seconds
+     * @property {Snowflake} supportChannel - Snowflake of support channel
      */
 
     /**
@@ -50,6 +57,13 @@ export default class GrouperClient extends Client {
         this.commands = new CommandStore(this);
 
         /**
+         * Client's notification store
+         * 
+         * @type {GrouperNotificationManager}
+         */
+        this.notifications = new GrouperNotificationManager(this);
+
+        /**
          * Client's command router
          * 
          * @type {GrouperCommandRouter}
@@ -57,6 +71,13 @@ export default class GrouperClient extends Client {
         this.router = new GrouperCommandRouter(this, {
             prefix: options.prefix || '?',
         });
+
+        /** Client's support channel snowflake
+         * 
+         * @type {Snowflake}
+         */
+        this.supportChannel = options.supportChannel || 0;
+
     }
 
     /**
@@ -84,7 +105,11 @@ export default class GrouperClient extends Client {
 
         this.on('databaseInitialized', () => {
             LoadTags(this);
-        })
+        });
+
+        this.notifications.listen('guildCreate', new GuildJoinNotification(this));
+        this.notifications.listen('guildDelete', new GuildLeaveNotification(this));
+        this.notifications.listen('commandExecuted', new CommandNotification(this));
 
         return this;
     }

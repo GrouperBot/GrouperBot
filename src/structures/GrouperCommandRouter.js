@@ -1,6 +1,6 @@
 import GrouperClient from './GrouperClient';
 import  { Message } from 'discord.js';
-import { ArgRegex } from "../util/Constants";
+import { ArgRegex } from '../util/Constants';
 import GrouperMessage from './GrouperMessage';
 
 export default class GrouperCommandRouter {
@@ -63,6 +63,15 @@ export default class GrouperCommandRouter {
         const m = new GrouperMessage(message);
 
         m.setCommand(fCommand);
+
+        /**
+         * Emitted when a command is executed
+         * 
+         * @event GrouperClient#commandExecuted
+         * 
+         * @param {GrouperMessage}
+         */
+        this.client.emit('commandExecuted', m);
 
         fCommand.run(m);
     }
