@@ -9,9 +9,8 @@ const client = new GrouperClient({
     disableEveryone: true,
     developers: process.env.DEVELOPERS,
     adDuration: process.env.AD_DURATION,
-}, {
-    guild: process.env.SUPPORT_GUILD,
-    channel: process.env.SUPPORT_CHANNEL,
+    supportGuild: process.env.SUPPORT_GUILD,
+    supportChannel: process.env.SUPPORT_CHANNEL,
 });
 
 initialize(client, {

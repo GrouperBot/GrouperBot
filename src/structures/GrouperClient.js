@@ -1,22 +1,23 @@
-import { Client, ClientOptions } from 'discord.js';
+import { Client, ClientOptions, Snowflake } from 'discord.js';
 import LoadTags from '../util/LoadTags';
 import TagStore from '../stores/TagStore';
-import NotificationStore from '../stores/NotificationStore';
 import CommandStore from '../stores/CommandStore';
 import GrouperCommandRouter from './GrouperCommandRouter';
 
-// notifications
-import JoinNotification from '../notification/JoinNotification';
-import LeaveNotification from '../notification/LeaveNotification';
-import CommandNotification from '../notification/CommandNotification';
+// Notifications
+import CommandNotification from '../notifications/CommandNotification';
+import GrouperNotificationManager from './GrouperNotificationManager';
+import GuildJoinNotification from '../notifications/GuildJoinNotification';
+import GuildLeaveNotification from '../notifications/GuildLeaveNotification';
 
 export default class GrouperClient extends Client {
 
     /**
      * @typedef {ClientOptions} GrouperClientOptions
      * @property {string} [commandPrefix="?"] Command prefix
-     * @property {string} developers List of developer ids separated by comma
+     * @property {Snowflake[]} developers List of developer ids separated by comma
      * @property {number} adDuration - Duration of ads in seconds
+     * @property {Snowflake} supportChannel - Snowflake of support channel
      */
 
     /**
@@ -24,7 +25,7 @@ export default class GrouperClient extends Client {
      * 
      * @param {GrouperClientOptions} options 
      */
-    constructor(options = {}, supportInfo) {
+    constructor(options = {}) {
         super(options);
 
         /**
@@ -58,9 +59,9 @@ export default class GrouperClient extends Client {
         /**
          * Client's notification store
          * 
-         * @type {NotificationStore}
+         * @type {GrouperNotificationManager}
          */
-        this.notifications = new NotificationStore(this);
+        this.notifications = new GrouperNotificationManager(this);
 
         /**
          * Client's command router
@@ -71,18 +72,12 @@ export default class GrouperClient extends Client {
             prefix: options.prefix || '?',
         });
 
-        /**
-         * Client's support guild snowflake
-         * 
-         * @type {String}
-         */
-        this.supportguild = supportInfo.guild;
-
         /** Client's support channel snowflake
          * 
-         * @type {String}
+         * @type {Snowflake}
          */
-        this.supportchannel = supportInfo.channel;
+        this.supportChannel = options.supportChannel || 0;
+
     }
 
     /**
@@ -112,34 +107,10 @@ export default class GrouperClient extends Client {
             LoadTags(this);
         });
 
-        // we have to wait until ready event that way we can reliably loop through guilds and channels
-        this.on('ready', () => {
+        this.notifications.listen('guildCreate', new GuildJoinNotification(this));
+        this.notifications.listen('guildDelete', new GuildLeaveNotification(this));
+        this.notifications.listen('commandExecuted', new CommandNotification(this));
 
-            // let's maintain bcompat and keep this field optional
-            if (!this.supportguild || !this.supportchannel)
-                return;
-
-            this.notifications.add('join', new JoinNotification(this, this.supportguild, this.supportchannel));
-            this.notifications.add('leave', new LeaveNotification(this, this.supportguild, this.supportchannel));
-            this.notifications.add('cmd', new CommandNotification(this, this.supportguild, this.supportchannel));
-        });
-
-        this.on('guildCreate', (g) => {
-            const notification = this.notifications.get('join');
-            if (!notification)
-                return;
-
-            const embed = notification.buildEmbed(g);
-            notification.dispatch(embed);
-        });
-        this.on('guildDelete', (g) => {
-            const notification = this.notifications.get('leave');
-            if (!notification)
-                return;
-
-            const embed = notification.buildEmbed(g);
-            notification.dispatch(embed);
-        });
         return this;
     }
 }
