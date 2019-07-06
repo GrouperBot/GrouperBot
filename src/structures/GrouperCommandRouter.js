@@ -65,7 +65,7 @@ export default class GrouperCommandRouter {
         m.setCommand(fCommand);
 
         /**
-         * Emitted when the database is first initialized
+         * Emitted when a command is executed
          * 
          * @event GrouperClient#commandExecuted
          * 
