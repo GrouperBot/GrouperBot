@@ -120,9 +120,9 @@ export default class GroupCommand extends GrouperCommand {
                 }
 
                 if (![
-                    grouper.message.author.id,
+                    bAdvertisement.poster,
                     ...this.client.developers,
-                ].includes(bAdvertisement.poster)) {
+                ].includes(grouper.message.author.id)) {
                     response
                         .setTitle('Failed to remove advertisement')
                         .setState(false)
