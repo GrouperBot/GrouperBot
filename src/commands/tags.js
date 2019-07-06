@@ -64,7 +64,7 @@ export default class TagsCommand extends GrouperCommand {
                 const response = new ResponseBuilder()
                     .setTitle('Error!')
                     .setState(false)
-                    .setDescription(`Unable to perform operation: ${e.message}'`);
+                    .setDescription(`Unable to perform operation: ${e.message}`);
 
                 grouper.dispatch(response);
             });
