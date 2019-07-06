@@ -10,6 +10,10 @@ import GrouperNotificationManager from './GrouperNotificationManager';
 import GuildJoinNotification from '../notifications/GuildJoinNotification';
 import GuildLeaveNotification from '../notifications/GuildLeaveNotification';
 
+// DBL API Requests
+import { stringify} from 'querystring';
+import { request } from 'https';
+
 export default class GrouperClient extends Client {
 
     /**
@@ -107,10 +111,32 @@ export default class GrouperClient extends Client {
             LoadTags(this);
         });
 
+        if (process.env.DBL_TOKEN) {
+            this.on('ready', this.update);
+            this.on('guildCreate', this.update);
+            this.on('guildDelete', this.update);    
+        }
+
         this.notifications.listen('guildCreate', new GuildJoinNotification(this));
         this.notifications.listen('guildDelete', new GuildLeaveNotification(this));
         this.notifications.listen('commandExecuted', new CommandNotification(this));
 
         return this;
+    }
+
+    update() {
+        const data = stringify({ server_count: this.guilds.size });
+        const req = request({
+            host: 'discordbots.org',
+            path: `/api/bots/${this.user.id}/stats`,
+            method: `POST`,
+            headers: {
+                'Authorization': process.env.DBL_TOKEN,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(data)
+            }
+        });
+        req.write(data);
+        req.end();
     }
 }
