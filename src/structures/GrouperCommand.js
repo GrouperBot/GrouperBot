@@ -47,7 +47,6 @@ export default class GrouperCommand {
          */
         this.aliases = Array.isArray(info.aliases) ? info.aliases : [];
 
-
         /**
          * Developer only boolean
          * 

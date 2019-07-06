@@ -59,7 +59,15 @@ export default class TagsCommand extends GrouperCommand {
             .setAuthorizedUsers([grouper.message.author.id])
             .setChannel(grouper.message.channel)
             .setDescription("Here's a list of all of our tags.")
-            .build();
+            .build()
+            .catch((e) => {
+                const response = new ResponseBuilder()
+                    .setTitle('Error!')
+                    .setState(false)
+                    .setDescription(`Unable to perform operation: ${e.message}'`);
+
+                grouper.dispatch(response);
+            });
     }
 
     /**
