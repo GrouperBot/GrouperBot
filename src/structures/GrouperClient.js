@@ -1,6 +1,7 @@
 import { Client, ClientOptions, Snowflake } from 'discord.js';
 import LoadTags from '../util/LoadTags';
 import TagStore from '../stores/TagStore';
+import TaskStore from '../stores/TaskStore';
 import CommandStore from '../stores/CommandStore';
 import GrouperCommandRouter from './GrouperCommandRouter';
 
@@ -57,6 +58,13 @@ export default class GrouperClient extends Client {
         this.commands = new CommandStore(this);
 
         /**
+         * Client's task store
+         * 
+         * @type {TaskStore}
+         */
+        this.tasks = new TaskStore(this);
+
+        /**
          * Client's notification store
          * 
          * @type {GrouperNotificationManager}
@@ -77,7 +85,6 @@ export default class GrouperClient extends Client {
          * @type {Snowflake}
          */
         this.supportChannel = options.supportChannel || 0;
-
     }
 
     /**

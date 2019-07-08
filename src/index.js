@@ -20,9 +20,9 @@ initialize(client, {
     database: process.env.DB_NAME,
 });
 
-client
-    .hook()
-    .commands.registerCommandsIn(join(__dirname, 'commands'))
+client.hook();
+client.commands.registerCommandsIn(join(__dirname, 'commands'));
+client.tasks.registerTasksIn(join(__dirname, 'tasks'));
 
 client
     .on('guildCreate', g => {
@@ -47,6 +47,12 @@ client
     })
     .on('commandRegistered', command => {
         log.debug(`Client#commandRegistered -> ${command.name}`);
+    })
+    .on('taskRegistered', task => {
+        log.debug(`Client#taskRegistered -> ${task.name}`);
+    })
+    .on('sweeped', count => {
+        log.info(`Client#sweeped -> ${count}`);
     })
     .on('error', e => {
         log.error(e);
