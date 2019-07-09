@@ -67,7 +67,7 @@ export default class RequestCommand extends GrouperCommand{
           .addHelpField('Add a tag', `${this.toString()} \`<tagName>\` \`<reasons>\``)
           .isUsage()
 
-      return grouper.dispatch(response);
+      grouper.dispatch(response);
   }
 
   /**
