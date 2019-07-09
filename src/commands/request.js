@@ -40,7 +40,7 @@ export default class RequestCommand extends GrouperCommand {
         // Makes sure people arent requesting already implemented tags
         if (this.client.tags.has(sTag)) {
             response
-                .setTitle('**Tag already exist**')
+                .setTitle('Tag already exist')
                 .setState(false)
                 .setDescription(`Tag "${sTag}" already exist within the database`)
 
