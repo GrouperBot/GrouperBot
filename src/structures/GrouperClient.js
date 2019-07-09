@@ -19,7 +19,7 @@ export default class GrouperClient extends Client {
      * @property {string} developers List of developer ids separated by comma
      * @property {number} adDuration - Duration of ads in seconds
      * @property {Snowflake} supportChannel - Snowflake of support channel
-     * @property {Snowflake} tagRequestChannel - Snowflake of support channel
+     * @property {Snowflake} tagRequestChannel - Snowflake of request channel
      */
 
     /**
