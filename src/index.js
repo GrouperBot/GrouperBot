@@ -11,6 +11,7 @@ const client = new GrouperClient({
     adDuration: process.env.AD_DURATION,
     supportGuild: process.env.SUPPORT_GUILD,
     supportChannel: process.env.SUPPORT_CHANNEL,
+    tagRequestChannel: process.env.TAG_REQUEST_CHANNEL,
 });
 
 initialize(client, {
