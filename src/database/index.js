@@ -1,6 +1,7 @@
 import GrouperClient from '../structures/GrouperClient';
 import { createConnection, ConnectionConfig, Connection } from 'mysql';
 import { CreateTagTable, CreateAdvertisementTable } from '../util/Constants';
+import DatabaseUnavaialble from '../errors/DatabaseUnavailable';
 
 /**
  * Database object
@@ -54,11 +55,17 @@ export function initialize(client, config, retry = false) {
 /**
  * Obtains the database Connection object
  * 
+ * @note Taking advantage of the golang's multiple return type with await-to
+ * 
+ * @async
+ * 
+ * @throws {DatabaseUnavailable}
+ * 
  * @return {Connection}
  */
-export function getDB() {
+export async function getDB() {
     if (!['authenticated', 'connected'].includes(database.state)) {
-        throw new Error('Database uninitialized');
+        throw new DatabaseUnavailable('Database uninitialized');
     }
 
     return database;

@@ -2,6 +2,7 @@ import GrouperTask from '../structures/GrouperTask';
 import GrouperClient from '../structures/GrouperClient';
 import { format } from 'mysql';
 import { getDB } from '../database';
+import { to } from 'await-to-js';
 
 export default class SweepTask extends GrouperTask {
 
@@ -28,7 +29,15 @@ export default class SweepTask extends GrouperTask {
             Math.floor(Date.now() / 1000),
         );
 
-        getDB().query(stmt, (err, results) => {
+        let database, err;
+
+        [ err , database ] = await to(getDB());
+
+        if (err) {
+            return;
+        }
+
+        database.query(stmt, (err, results) => {
             if (err) {
                 return;
             }

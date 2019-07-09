@@ -1,15 +1,28 @@
 import GrouperClient from '../structures/GrouperClient';
 import { getDB } from '../database';
 import Tag from '../models/Tag';
+import { to } from 'await-to-js';
 
 
 /**
  * Load tags from database into client tag store
  * 
+ * @async
+ * 
  * @param {GrouperClient} client 
  */
 export default async function LoadTags(client) {
-    getDB().query("SELECT `name`, `created_at` FROM `tags`", (err, results) => {
+    let database, err;
+
+    [ err , database ] = await to(getDB());
+
+    if (err) {
+        setTimeout(LoadTags, 5 * 1000);
+
+        return;
+    }
+
+    database.query("SELECT `name`, `created_at` FROM `tags`", (err, results) => {
         if (err) {
             throw err;
         }
