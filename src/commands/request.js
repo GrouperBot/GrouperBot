@@ -40,7 +40,7 @@ export default class RequestCommand extends GrouperCommand {
         // Makes sure people arent requesting already implemented tags
         if (this.client.tags.has(sTag)) {
             response
-                .setTitle('Tag already exist')
+                .setTitle('**Tag already exist**')
                 .setState(false)
                 .setDescription(`Tag "${sTag}" already exist within the database`)
 
@@ -48,8 +48,12 @@ export default class RequestCommand extends GrouperCommand {
         }
 
         response
-            .addField(`**${sTag}**`, `\`\`\`${grouper.joinArgAfter(1)}\`\`\``);
+            .setTitle("TAG REQUEST")
+            .setColor("GREEN")
+            .addField(`**${sTag}**`, `\`\`\`${grouper.joinArgAfter(1)}\`\`\``)
+            .setFooter(`Requested by ${grouper.message.author.username}#${grouper.message.author.discriminator} in ${grouper.message.guild.name}`);
 
+        grouper.message.reply("Request successful! ✅")
         return this.dispatch(response);
     }
 

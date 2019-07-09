@@ -91,7 +91,7 @@ export default class GrouperClient extends Client {
          *
          * @type {Snowflake}
          */
-        this.tagRequestChannel = options.requestChannel || 0;
+        this.tagRequestChannel = options.tagRequestChannel || 0;
     }
 
     /**
