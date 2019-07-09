@@ -73,7 +73,6 @@ export default class RequestCommand extends GrouperCommand {
     /**
      * Utility/helper for this command
      *
-     * @param {GrouperMessage} grouper
      * @param {RichEmbed} content
      */
     dispatch(content) {
