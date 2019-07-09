@@ -1,8 +1,10 @@
-import Tag from './Tag';
+import DatabaseUnavailable from '../errors/DatabaseUnavailable';
 import { format, MysqlError } from 'mysql';
-import NoResult from '../errors/NoResult';
 import { getDB } from '../database';
+import NoResult from '../errors/NoResult';
+import Tag from './Tag';
 import log from '../log';
+import to from 'await-to-js';
 
 export default class Advertisement {
 
@@ -115,16 +117,24 @@ export default class Advertisement {
      * Inserts a new advertisement into database
      * 
      * @async
-     * @return {Promise<MysqlError | null>}
+     * @return {Promise<MysqlError | DatabaseUnavailable | null>}
      */
     async insert() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const stmt = format(
                 "INSERT INTO advertisements (`poster`, `posterTag`, `tags`, `players`, `description`, `expiration`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 [this.poster, this.posterTag, this.tags.map(t => t.name).join(','), this.players, this.description, this.expiration, Math.floor(Date.now() / 1000)]
             );
 
-            getDB().query(stmt, err => {
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
+
+            database.query(stmt, err => {
                 if (err) {
                     log.warn(err);
 
@@ -139,15 +149,23 @@ export default class Advertisement {
     /**
      * Removes an advertisement by its ID
      * 
-     * @return {Promise<MysqlError|null>}
+     * @return {Promise<MysqlError | DatabaseUnavailable | null>}
      */
     async remove() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const sStmt = "DELETE FROM advertisements WHERE `id` = ?";
 
             const stmt = format(sStmt, this.id);
 
-            getDB().query(stmt, err => {
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
+
+            database.query(stmt, err => {
                 if (err) {
                     log.warn(err);
 
@@ -164,16 +182,24 @@ export default class Advertisement {
      * 
      * @param {Number} id 
      * 
-     * @return {Promise<Advertisement|(NoResult|MysqlError)>}
+     * @return {Promise<Advertisement | (NoResult | DatabaseUnavailable | MysqlError)>}
      */
     static async searchById(id) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
     
             const sStmt = `SELECT * FROM advertisements WHERE \`id\`='${id}' AND \`expiration\` > UNIX_TIMESTAMP();`;
 
             const stmt = format(sStmt, sStmt);
 
-            getDB().query(stmt, (err, result) => {
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
+
+            database.query(stmt, (err, result) => {
                 if (err) {
                     log.warn(err);
 
@@ -209,10 +235,10 @@ export default class Advertisement {
      * 
      * @param {Tags[] | string[]} tags 
      * 
-     * @return {Promise.<Advertisement[]|(NoResult|MysqlError)>}
+     * @return {Promise<Advertisement[] | (NoResult | DatabaseUnavailable | MysqlError)>}
      */
     static searchByTags(tags) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (!Array.isArray(tags)) {
                 reject('Tags is not an array');
             }
@@ -236,8 +262,16 @@ export default class Advertisement {
             sStmt += " AND `expiration` > UNIX_TIMESTAMP()";
     
             const stmt = format(sStmt, [...tags]);
-    
-            getDB().query(stmt, (err, results) => {
+
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
+
+            database.query(stmt, (err, results) => {
                 if (err) {
                     log.warn(err);
 

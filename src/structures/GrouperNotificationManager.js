@@ -1,5 +1,5 @@
 import GrouperClient from './GrouperClient';
-import { WSEventType, Collection, Constants } from 'discord.js';
+import { WSEventType, Collection, Constants, RichEmbed } from 'discord.js';
 import GrouperNotification from '../notifications/GrouperNotification';
 
 

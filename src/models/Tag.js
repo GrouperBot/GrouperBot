@@ -1,6 +1,7 @@
+import { to } from 'await-to-js';
 import { getDB } from '../database';
 import { format, MysqlError } from 'mysql';
-import Advertisement from './Advertisement';
+import DatabaseUnavailable from '../errors/DatabaseUnavailable';
 
 
 export default class Tag {
@@ -41,16 +42,24 @@ export default class Tag {
      * Inserts a new tag into database
      * 
      * @async
-     * @return {Promise<MysqlError | null>}
+     * @return {Promise<MysqlError | DatabaseUnavailable | null>}
      */
     async insert() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const stmt = format(
                 "INSERT INTO tags (`name`, `created_at`) VALUES (?, ?)",
                 [this.name, Math.floor(Date.now() / 1000)],
             );
+
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
     
-            getDB().query(stmt, err => {
+            database.query(stmt, err => {
                 if (err) {
                     reject(err);
 
@@ -64,16 +73,24 @@ export default class Tag {
      * Deletes a tag from database
      * 
      * @async
-     * @return {Promise<MysqlError | null>}
+     * @return {Promise<MysqlError | DatabaseUnavailable | null>}
      */
     async remove() {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const stmt = format(
                 "DELETE FROM tags WHERE `name` = ?",
                 [this.name],
             );
+
+            let database, err;
+
+            [ err , database ] = await to(getDB());
+
+            if (err) {
+                reject(err);
+            }
     
-            getDB().query(stmt, err => {
+            database.query(stmt, err => {
                 if (err) {
                     reject(err);
 
