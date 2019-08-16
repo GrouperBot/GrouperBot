@@ -1,7 +1,7 @@
 export default class DatabaseUnavailable extends Error {
     
     /**
-     * Database unavaialble constructor
+     * Database unavailable constructor
      * 
      * @param  {...any} args 
      */
