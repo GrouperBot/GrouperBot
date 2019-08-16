@@ -148,7 +148,7 @@ export default class GroupCommand extends GrouperCommand {
                 }
 
                 response
-                    .setTitle('Advertiesment removed!')
+                    .setTitle('Advertisement removed!')
                     .setDescription(`Your advertisement with the ID of # ${id} has been successfully removed!`)
 
                 return grouper.dispatch(response);
